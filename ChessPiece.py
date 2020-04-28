@@ -18,7 +18,7 @@ class ChessPiece:
         return self.color
     
     def setEnPassantEligible(self, b, x, y):
-        if (self.returnType() is "Pawn"):
+        if (self.returnType() == "Pawn"):
             self.enPassantEligible = b
             self.enPassantAttackX = x
             self.enPassantAttackY = y
@@ -33,4 +33,4 @@ class ChessPiece:
         return self.enPassantEligible
     
     def toString(self):
-        return self.type + ", " + self.color + "\n" + "En Passant Eligible: " + str(self.enPassantEligible) + "\n" + "Image Location: " + self.findImage()
+        return self.type + ", " + self.color

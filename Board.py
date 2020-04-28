@@ -334,6 +334,13 @@ class Board:
 
     def getImage(self, x, y):
         return self.board[x][y].findImage()
+    
+    def toString(self):
+        self.output = ""
+        for x in range(8):
+            for y in range(8):
+                output += self.board[x][y].toString() + " "
+        return output
 
     def initializeBoard(self):
         # Black Side
