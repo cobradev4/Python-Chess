@@ -1,15 +1,7 @@
 #!/usr/bin/python
 from ChessPiece import *
 
-# Castling variables
-wrRookMoved = False
-wlRookMoved = False
-blRookMoved = False
-brRookMoved = False
-wKingMoved = False
-bKingMoved = False
-
-class Board:
+class Board(object):
     
     def __init__(self):
         self.board = [[ChessPiece("blank", "none") for j in range(8)] for i in range(8)]
@@ -19,10 +11,16 @@ class Board:
         self.upgradablePawn = False
         self.destroyedPieces = [] # List to hold destoryed pieces (ChessPiece list)
         self.turn = 0 # Variable to keep track of white (0) or black (1)
+        # Castling variables
+        self.wrRookMoved = False
+        self.wlRookMoved = False
+        self.blRookMoved = False
+        self.brRookMoved = False
+        self.wKingMoved = False
+        self.bKingMoved = False
 
     # Argument variables indicate new and previous locations in said column or row
     def movePiece(self, prevR, prevC, newR, newC):
-        global wrRookMoved, wlRookMoved, blRookMoved, brRookMoved, wKingMoved, bKingMoved
         self.prevType = self.board[prevR][prevC].returnType()
         self.prevColor = self.board[prevR][prevC].returnColor()
 
@@ -30,20 +28,20 @@ class Board:
             # Castling - Keep track of which kings and rooks have been moved
             if (self.prevType == "King"):
                 if (self.prevColor == "White"):
-                    wKingMoved = True
+                    self.wKingMoved = True
                 else:
-                    bKingMoved = True
+                    self.bKingMoved = True
             if (self.prevType == "Rook"):
                 if (self.prevColor == "White"):
                     if (prevR == 7) and (prevC == 7):
-                        wrRookMoved = True
+                        self.wrRookMoved = True
                     else:
-                        wlRookMoved = True
+                        self.wlRookMoved = True
                 else:
                     if (prevR == 0) and (prevC == 0):
-                        blRookMoved = True
+                        self.blRookMoved = True
                     else:
-                        brRookMoved = True
+                        self.brRookMoved = True
             self.board[prevR][prevC].setEnPassantEligible(False, -1, -1)
             # Save list of destroyed pieces
             if (self.board[newR][newC].returnType() != "blank"):
@@ -124,14 +122,12 @@ class Board:
 
     # Have to write out all rules of chess here :(
     def isLegal(self, prevR, prevC, newR, newC):
-        global wrRookMoved, wlRookMoved, blRookMoved, brRookMoved, wKingMoved, bKingMoved
-
         self.pType = self.board[prevR][prevC].returnType()
         self.nType = self.board[newR][newC].returnType()
         self.pColor = self.board[prevR][prevC].returnColor()
         self.nColor = self.board[newR][newC].returnColor()
 
-        # Check and make sure it is the player's turn
+        # Check and make  sure it is the player's turn
         if (self.turn == 0) and (self.pColor == "Black"):
             return False
         if (self.turn == 1) and (self.pColor == "White"):
@@ -299,12 +295,12 @@ class Board:
                             return False
                 # Move rook
                 if (self.pColor == "White"):
-                    if (wKingMoved == True) or (wrRookMoved == True):
+                    if (self.wKingMoved == True) or (self.wrRookMoved == True):
                         return False
                     self.board[5][7] = self.board[7][7]
                     self.board[7][7] = ChessPiece("blank", "none")
                 else:
-                    if (bKingMoved == True) or (brRookMoved == True):
+                    if (self.bKingMoved == True) or (self.brRookMoved == True):
                         return False
                     self.board[5][0] = self.board[7][0]
                     self.board[7][0] = ChessPiece("blank", "none")
@@ -319,12 +315,12 @@ class Board:
                                 return False
                 # Move rook
                 if (self.pColor == "Black"):
-                    if (bKingMoved == True) or (blRookMoved == True):
+                    if (self.bKingMoved == True) or (self.blRookMoved == True):
                         return False
                     self.board[2][7] = self.board[0][7]
                     self.board[0][7] = ChessPiece("blank", "none")
                 else:
-                    if (wKingMoved == True) or (wlRookMoved == True):
+                    if (self.wKingMoved == True) or (self.wlRookMoved == True):
                         return False
                     self.board[2][0] = self.board[0][0]
                     self.board[0][0] = ChessPiece("blank", "none")
@@ -338,9 +334,10 @@ class Board:
     def toString(self):
         self.output = ""
         for x in range(8):
+            self.output = self.output + "\n"
             for y in range(8):
-                output += self.board[x][y].toString() + " "
-        return output
+                self.output = self.output + self.board[x][y].toString() + " "
+        return self.output
 
     def initializeBoard(self):
         # Black Side

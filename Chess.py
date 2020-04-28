@@ -13,7 +13,7 @@ prevBG = ""
 gameOver = False
 prevR, prevC, newR, newC = -1, -1, -1, -1
 
-class Chess:
+class Chess(object):
  
     def __init__(self, mode):
         self.b = Board()
@@ -111,18 +111,18 @@ class Chess:
     def loadWindowItems(self):
         # Tile Matrix (Setup chess board)
         self.tileMatrix = [[Button(self.window, width = 20, height = 10) for x in range(8)] for y in range(8)] # create matrix of chess squares
-        index = 1
+        self.index = 1
         for r in range(8):
             for c in range(8):
                 # Alternate background colors
-                if (index % 2 != 0):
+                if (self.index % 2 != 0):
                     self.tileMatrix[r][c].configure(bg = "gray")
                 else:
                     self.tileMatrix[r][c].configure(bg = "brown")
                 self.tileMatrix[r][c].configure(activebackground = "yellow") # For mouse hovering
                 self.tileMatrix[r][c].place(x=r*125, y=c*125)
-                index += 1
-            index += 1 
+                self.index += 1
+            self.index += 1 
         self.loadMatrix()
 
     def loadMatrix(self): # updates gui from board matrix

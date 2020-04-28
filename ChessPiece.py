@@ -1,5 +1,5 @@
 #!/usr/bin/python
-class ChessPiece:
+class ChessPiece(object):
 
     def __init__(self, type, color):
         self.type = type
@@ -33,4 +33,4 @@ class ChessPiece:
         return self.enPassantEligible
     
     def toString(self):
-        return self.type + ", " + self.color
+        return self.color + self.type
