@@ -5,7 +5,6 @@ import random
 
 class CPU:
     random = True
-    # TODO - When entire enemy is destroyed and only king is left if king is attacked, game freezes :|
     
     def __init__(self):
         self.xRandomI = -1

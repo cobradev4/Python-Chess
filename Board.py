@@ -108,6 +108,7 @@ class Board:
             return "Black"
         elif (self.blackKPresent == False):
             return "White"
+        return ""
                 
     def isInCheck(self, r, c):
         self.incrementTurn() # Need to allow opposite attacks to be legal
