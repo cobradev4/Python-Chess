@@ -1,9 +1,6 @@
 #!/usr/bin/python
 from ChessPiece import *
 
-# Variable to keep track of white (0) or black (1)
-turn = 0 
-
 # Castling variables
 wrRookMoved = False
 wlRookMoved = False
@@ -21,6 +18,7 @@ class Board:
         self.upgradablePawnY = -1
         self.upgradablePawn = False
         self.destroyedPieces = [] # List to hold destoryed pieces (ChessPiece list)
+        self.turn = 0 # Variable to keep track of white (0) or black (1)
 
     # Argument variables indicate new and previous locations in said column or row
     def movePiece(self, prevR, prevC, newR, newC):
@@ -88,14 +86,13 @@ class Board:
         self.board = b
 
     def incrementTurn(self):
-        global turn
-        if (turn == 0):
-            turn += 1
-        elif (turn == 1):
-            turn -= 1
-    
+        if (self.turn == 0):
+            self.turn += 1
+        elif (self.turn == 1):
+            self.turn -= 1
+
     def checkTurn(self):
-        return turn
+        return self.turn
     
     def checkWin(self):
         self.whiteKPresent = False  
@@ -108,9 +105,9 @@ class Board:
                     elif (self.board[i][j].returnColor() == "Black"):
                         self.blackKPresent = True
         if (self.whiteKPresent == False):
-            return "black"
+            return "Black"
         elif (self.blackKPresent == False):
-            return "white"
+            return "White"
                 
     def isInCheck(self, r, c):
         self.incrementTurn() # Need to allow opposite attacks to be legal
@@ -126,7 +123,7 @@ class Board:
 
     # Have to write out all rules of chess here :(
     def isLegal(self, prevR, prevC, newR, newC):
-        global turn, wrRookMoved, wlRookMoved, blRookMoved, brRookMoved, wKingMoved, bKingMoved
+        global wrRookMoved, wlRookMoved, blRookMoved, brRookMoved, wKingMoved, bKingMoved
 
         self.pType = self.board[prevR][prevC].returnType()
         self.nType = self.board[newR][newC].returnType()
@@ -134,9 +131,9 @@ class Board:
         self.nColor = self.board[newR][newC].returnColor()
 
         # Check and make sure it is the player's turn
-        if (turn == 0) and (self.pColor == "Black"):
+        if (self.turn == 0) and (self.pColor == "Black"):
             return False
-        if (turn == 1) and (self.pColor == "White"):
+        if (self.turn == 1) and (self.pColor == "White"):
             return False 
         
         # Prevent from attacking own team

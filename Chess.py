@@ -9,6 +9,8 @@ from CPU import *
 
 #Global variables for tile interaction
 numClicked = 0
+prevBG = ""
+gameOver = False
 prevR, prevC, newR, newC = -1, -1, -1, -1
 
 class Chess:
@@ -28,43 +30,47 @@ class Chess:
         self.window.resizable(False, False)
 
     def tileClick(self, r, c): 
-        global numClicked, prevR, prevC, newR, newC
+        global numClicked, prevR, prevC, newR, newC, prevBG, gameOver
         print(str(r) + "," + str(c) + " has been clicked!")
-    
         numClicked += 1
         if (numClicked == 1):
             prevR = r
             prevC = c
             # Highlight chosen tile
-            self.tileMatrix[r][c].config(highlightbackground="yellow")
+            prevBG = self.tileMatrix[r][c].cget("bg")
+            self.tileMatrix[r][c].configure(bg = "yellow")
         if (numClicked == 2):
             newR = r
             newC = c
             self.b.movePiece(prevR, prevC, newR, newC)
-            self.loadWindowItems()
+            self.loadMatrix()
             numClicked = 0
+            # Reset highlighted background
+            self.tileMatrix[prevR][prevC].configure(bg = prevBG)
             # Perform actions based on which turn it is
+            print(str(self.b.checkTurn()))
             if (self.b.checkTurn() == 0):
                 self.window.title("Chess - White's Turn")
             else:
                 self.window.title("Chess - Black's Turn")
-                if (self.gm == "CPU"): 
+                if (self.gm == "CPU" and gameOver == False): 
                     self.window.title("CPU Calculating...")
                     self.c.playMove(self.b.getBoard())
                     self.tileClick(self.c.getxChoiceI(), self.c.getyChoiceI())
                     self.tileClick(self.c.getxChoiceN(), self.c.getyChoiceN())
-
             # Check for wins
-            if (self.b.checkWin() == "black"):
+            if (self.b.checkWin() == "Black"):
                 self.window.title("Game Over - Black Wins!")
                 for x in range(8):
                     for y in range(8):
                         self.tileMatrix[x][y]["state"] = "disabled"
-            elif (self.b.checkWin() == "white"):
+                gameOver = True
+            elif (self.b.checkWin() == "White"):
                 self.window.title("Game Over - White Wins!")
                 for x in range(8):
                     for y in range(8):
                         self.tileMatrix[x][y]["state"] = "disabled"
+                gameOver = True
         # Search for pawn upgrades
         if (self.b.searchForPawnUpgrade("White") > -1):
             self.upgradePawn(self.b.searchForPawnUpgrade("White"), 0, "White")
@@ -113,10 +119,11 @@ class Chess:
                     self.tileMatrix[r][c].configure(bg = "gray")
                 else:
                     self.tileMatrix[r][c].configure(bg = "brown")
+                self.tileMatrix[r][c].configure(activebackground = "yellow") # For mouse hovering
                 self.tileMatrix[r][c].place(x=r*125, y=c*125)
                 index += 1
-            index += 1
-        self.loadMatrix() 
+            index += 1 
+        self.loadMatrix()
 
     def loadMatrix(self): # updates gui from board matrix
         self.pieceImage = [[ImageTk.PhotoImage(Image.open("./images/noneblank.png")) for x in range(8)] for y in range(8)]
@@ -127,4 +134,6 @@ class Chess:
                 #print("Loading image: " + self.location)
                 if (self.b.getImage(r,c) != "./images/noneblank.png"):
                     self.tileMatrix[r][c].configure(image = self.pieceImage[r][c], width = 120, height = 120)
+                else:
+                    self.tileMatrix[r][c].configure(image = '', width = 20, height = 10)
                 self.tileMatrix[r][c].configure(command = lambda c=c, r=r: Chess.tileClick(self, r, c)) # https://stackoverflow.com/questions/17677649/tkinter-assign-button-command-in-loop-with-lambda

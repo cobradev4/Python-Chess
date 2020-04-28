@@ -16,7 +16,7 @@ class CPU:
         self.yChoiceI = -1
         self.xChoiceN = -1
         self.yChoiceN = -1
-        self.testB = Board()
+        self.testB = Board() # Board object that can be altered without causing damage
 
     if (random == False):
         def playMove(self, board):
@@ -40,9 +40,11 @@ class CPU:
         def playMove(self, board):
             print("CPU - Analyzing Board...")
             self.testB.setBoard(board)
+            self.testB.incrementTurn()
             while (self.testB.isLegal(self.xRandomI, self.yRandomI, self.xRandomN, self.yRandomN) == False):
                 self.findRandomPieces()
             print("Found legal solution: " + str(self.xRandomI) + "," + str(self.yRandomI) + " --> " + str(self.xRandomN) + "," + str(self.yRandomN))
+            self.testB.incrementTurn()
 
         def getxChoiceI(self):
             return self.xRandomI

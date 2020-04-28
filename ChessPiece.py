@@ -18,7 +18,7 @@ class ChessPiece:
         return self.color
     
     def setEnPassantEligible(self, b, x, y):
-        if (self.returnType() == "Pawn"):
+        if (self.returnType() is "Pawn"):
             self.enPassantEligible = b
             self.enPassantAttackX = x
             self.enPassantAttackY = y
