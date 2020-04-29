@@ -34,6 +34,7 @@ class CPU(object):
         return self.yChoiceI
 
     if (random == False):
+        # TODO - Can't currently use objects instead of strings because layer 2 grabs the final increment of i 
         def playMove(self, board):
             print("CPU - Analyzing Board...")
             self.nodeList = []
