@@ -34,13 +34,12 @@ class CPU(object):
         return self.yChoiceI
 
     if (random == False):
-        # TODO - Can't currently use objects instead of strings because layer 2 grabs the final increment of i 
         def playMove(self, board):
             print("CPU - Analyzing Board...")
             self.nodeList = []
             self.testB.setBoard(board)
             self.testB.incrementTurn()
-            self.root = Node(self.testB.toString())
+            self.root = Node(self.testB)
             self.index = 0
             # Layer 1
             for x in range(8):
@@ -53,23 +52,25 @@ class CPU(object):
                                 self.boardList[self.index].setBoard(board)
                                 self.boardList[self.index].incrementTurn()
                                 self.boardList[self.index].movePiece(x, y, x2, y2)
-                                self.nodeList.append(Node(self.boardList[self.index].toString(), parent=self.root))
+                                self.nodeList.append(Node(self.boardList[self.index], parent=self.root))
                                 self.index += 1
             self.nodeList2 = []
             # Layer 2
-            for i in range(len(self.boardList)):
+            self.index = 0
+            for i in range(len(self.nodeList)):
+                self.testB.setBoard(self.boardList[i].getBoard())
                 for x in range(8):
                     for y in range(8):
                         for x2 in range(8):
                             for y2 in range(8):
-                                self.testB.setBoard(self.boardList[i].getBoard())
                                 if (self.testB.isLegal(x, y, x2, y2)):
                                     self.board = Board()
                                     self.boardList2.append(self.board)
-                                    self.boardList2[i].setBoard(self.boardList[i].getBoard())
-                                    self.boardList2[i].incrementTurn()
-                                    self.boardList2[i].movePiece(x, y, x2, y2)
-                                    self.nodeList2.append(Node(self.boardList2[i].toString(), parent=self.nodeList[i]))
+                                    self.boardList2[self.index].setBoard(self.testB.getBoard())
+                                    self.boardList2[self.index].incrementTurn()
+                                    self.boardList2[self.index].movePiece(x, y, x2, y2)
+                                    self.nodeList2.append(Node(self.boardList2[self.index], parent=self.nodeList[i]))
+                                    self.index += 1
             self.xChoiceI = 0
             self.yChoiceI = 1
             self.xChoiceN = 0
