@@ -75,7 +75,7 @@ class CPU(object):
             self.yChoiceN = 2
             for pre, fill, node in RenderTree(self.root):
                 print("%s%s" % (pre, node.name))
-            DotExporter(self.root).to_picture("test1.png")
+            DotExporter(self.root).to_dotfile("test1.dot")
 
     else:
         # Random solution
