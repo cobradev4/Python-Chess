@@ -1,8 +1,9 @@
 #!/usr/bin/python
 from ChessPiece import ChessPiece
 from Board import Board
-from anytree import Node, RenderTree
 import random
+from anytree import Node, RenderTree
+from anytree.exporter import DotExporter
 
 class CPU(object):
     random = False
@@ -14,6 +15,7 @@ class CPU(object):
         self.yChoiceN = -1
         self.testB = Board() # Board object that can be altered without causing damage, just to be safe
         self.boardList = []
+        self.boardList2 = []
 
     def getxChoiceI(self):
         print("Returning X1: " + str(self.xChoiceI))
@@ -34,10 +36,12 @@ class CPU(object):
     if (random == False):
         def playMove(self, board):
             print("CPU - Analyzing Board...")
-            # Create tree
+            self.nodeList = []
             self.testB.setBoard(board)
             self.testB.incrementTurn()
+            self.root = Node(self.testB.toString())
             self.index = 0
+            # Layer 1
             for x in range(8):
                 for y in range(8):
                     for x2 in range(8):
@@ -48,13 +52,30 @@ class CPU(object):
                                 self.boardList[self.index].setBoard(board)
                                 self.boardList[self.index].incrementTurn()
                                 self.boardList[self.index].movePiece(x, y, x2, y2)
+                                self.nodeList.append(Node(self.boardList[self.index].toString(), parent=self.root))
                                 self.index += 1
+            self.nodeList2 = []
+            # Layer 2
+            for i in range(len(self.boardList)):
+                for x in range(8):
+                    for y in range(8):
+                        for x2 in range(8):
+                            for y2 in range(8):
+                                self.testB.setBoard(self.boardList[i].getBoard())
+                                if (self.testB.isLegal(x, y, x2, y2)):
+                                    self.board = Board()
+                                    self.boardList2.append(self.board)
+                                    self.boardList2[i].setBoard(self.boardList[i].getBoard())
+                                    self.boardList2[i].incrementTurn()
+                                    self.boardList2[i].movePiece(x, y, x2, y2)
+                                    self.nodeList2.append(Node(self.boardList2[i].toString(), parent=self.nodeList[i]))
             self.xChoiceI = 0
             self.yChoiceI = 1
             self.xChoiceN = 0
             self.yChoiceN = 2
-            for x in range(len(self.boardList)):
-                print(str(x) + ": " + self.boardList[x].toString() + "\n")
+            for pre, fill, node in RenderTree(self.root):
+                print("%s%s" % (pre, node.name))
+            DotExporter(self.root).to_picture("test1.png")
 
     else:
         # Random solution
