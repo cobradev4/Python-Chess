@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from ChessPiece import *
+from ChessPiece import ChessPiece
 
 class Board(object):
     
@@ -78,10 +78,12 @@ class Board(object):
         self.board[x][y] = ChessPiece(t, self.board[x][y].returnColor())
     
     def getBoard(self):
-        return self.board
+        return self.board[:]
     
     def setBoard(self, b):
-        self.board = b
+        for x in range(8):
+            for y in range(8):
+                self.board[x][y] = b[x][y]
 
     def incrementTurn(self):
         if (self.turn == 0):
@@ -146,13 +148,12 @@ class Board(object):
                     if (newC - 1 == prevC):
                         return True
                     if (newC - 2 == prevC) and (prevC == 1):
-                        print("Potentially En passant eligible...")
                         if (newR - 1 > -1): # Prevent IndexError
-                            if (self.board[newC][newR - 1].returnType() == "Pawn") and (self.board[newC][newR - 1].returnColor() != "Black"):
-                                self.board[newC][newR - 1].setEnPassantEligible(True, newR, newC)
+                            if (self.board[newR - 1][newC].returnType() == "Pawn") and (self.board[newR - 1][newC].returnColor() != "Black"):
+                                self.board[newR - 1][newC].setEnPassantEligible(True, newR, newC)
                         if (newR + 1 < 8): # Prevent IndexError
-                            if (self.board[newC][newR + 1].returnType() == "Pawn") and (self.board[newC][newR + 1].returnColor() != "Black"):
-                                self.board[newC][newR + 1].setEnPassantEligible(True, newR, newC)
+                            if (self.board[newR + 1][newC].returnType() == "Pawn") and (self.board[newR + 1][newC].returnColor() != "Black"):
+                                self.board[newR + 1][newC].setEnPassantEligible(True, newR, newC)
                         return True
                 # elif wouldn't work for some reason
                 if (self.nType != "blank") and (newC - 1 == prevC) and ((newR + 1 == prevR) or (newR - 1 == prevR)):
@@ -169,13 +170,12 @@ class Board(object):
                     if (newC + 1 == prevC):
                         return True
                     if (newC + 2 == prevC) and (prevC == 6):
-                        print("Potentially En passant eligible")
                         if (newR - 1 > -1): # Prevent IndexError
-                            if (self.board[newC][newR - 1].returnType() == "Pawn") and (self.board[newC][newR - 1].returnColor() != "White"):
-                                self.board[newC][newR - 1].setEnPassantEligible(True, newR, newC)
-                        if (newR + 1 < 8): #prevent IndexError
-                            if (self.board[newC][newR + 1].returnType() == "Pawn") and (self.board[newC][newR + 1].returnColor() != "White"):
-                                self.board[newC][newR + 1].setEnPassantEligible(True, newR, newC)
+                            if (self.board[newR - 1][newC].returnType() == "Pawn") and (self.board[newR - 1][newC].returnColor() != "White"):
+                                self.board[newR - 1][newC].setEnPassantEligible(True, newR, newC)
+                        if (newR + 1 < 8): # prevent IndexError
+                            if (self.board[newR + 1][newC].returnType() == "Pawn") and (self.board[newR - 1][newC].returnColor() != "White"):
+                                self.board[newR + 1][newC].setEnPassantEligible(True, newR, newC)
                         return True
                 # elif wouldn't work for some reason
                 if (self.nType != "blank") and (newC + 1 == prevC) and ((newR + 1 == prevR) or (newR - 1 == prevR)):
@@ -333,9 +333,9 @@ class Board(object):
     
     def toString(self):
         self.output = ""
-        for x in range(8):
+        for y in range(8):
             self.output = self.output + "\n"
-            for y in range(8):
+            for x in range(8):
                 self.output = self.output + self.board[x][y].toString() + " "
         return self.output
 

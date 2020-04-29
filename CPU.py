@@ -1,6 +1,6 @@
 #!/usr/bin/python
-from ChessPiece import *
-from Board import *
+from ChessPiece import ChessPiece
+from Board import Board
 from anytree import Node, RenderTree
 import random
 
