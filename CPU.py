@@ -2,7 +2,7 @@
 from ChessPiece import ChessPiece
 from Board import Board
 import random
-from anytree import Node, RenderTree
+from anytree import Node, RenderTree, PreOrderIter, LevelOrderGroupIter
 from anytree.exporter import DotExporter
 
 class CPU(object):
@@ -16,6 +16,7 @@ class CPU(object):
         self.testB = Board() # Board object that can be altered without causing damage, just to be safe
         self.boardList = []
         self.boardList2 = []
+        self.boardList3 = []
 
     def getxChoiceI(self):
         print("Returning X1: " + str(self.xChoiceI))
@@ -52,11 +53,12 @@ class CPU(object):
                                 self.boardList[self.index].setBoard(board)
                                 self.boardList[self.index].incrementTurn()
                                 self.boardList[self.index].movePiece(x, y, x2, y2)
+                                self.boardList[self.index].setCPUVars(x, y, x2, y2) # Save coordinates for later use
                                 self.nodeList.append(Node(self.boardList[self.index], parent=self.root))
                                 self.index += 1
-            self.nodeList2 = []
             # Layer 2
             self.index = 0
+            self.nodeList2 = []
             for i in range(len(self.nodeList)):
                 self.testB.setBoard(self.boardList[i].getBoard())
                 for x in range(8):
@@ -71,13 +73,48 @@ class CPU(object):
                                     self.boardList2[self.index].movePiece(x, y, x2, y2)
                                     self.nodeList2.append(Node(self.boardList2[self.index], parent=self.nodeList[i]))
                                     self.index += 1
-            self.xChoiceI = 0
-            self.yChoiceI = 1
-            self.xChoiceN = 0
-            self.yChoiceN = 2
-            for pre, fill, node in RenderTree(self.root):
-                print("%s%s" % (pre, node.name))
-            DotExporter(self.root).to_dotfile("test1.dot")
+            # Layer 3
+            self.index = 0
+            self.nodeList3 = []
+            for i in range(len(self.nodeList2)):
+                self.testB.setBoard(self.boardList2[i].getBoard())
+                for x in range(8):
+                    for y in range(8):
+                        for x2 in range(8):
+                            for y2 in range(8):
+                                if (self.testB.isLegal(x, y, x2, y2)):
+                                    self.board = Board()
+                                    self.boardList3.append(self.board)
+                                    self.boardList3[self.index].setBoard(self.testB.getBoard())
+                                    self.boardList3[self.index].incrementTurn()
+                                    self.boardList3[self.index].movePiece(x, y, x2, y2)
+                                    self.nodeList3.append(Node(self.boardList3[self.index], parent=self.nodeList2[i]))
+                                    self.index += 1
+            # Search tree
+            self.enemyCount = 17
+            self.choiceIndex = 0
+            self.index = 0
+            for node1 in self.nodeList:
+                self.tempCount = 0
+                for children in LevelOrderGroupIter(node1):
+                    for node2 in children:
+                        self.tempCount = node2.name.getWhiteCount()
+                        print(str(node2.name.getWhiteCount()))
+                        if (self.tempCount < self.enemyCount):
+                            self.enemyCount = self.tempCount
+                            self.choiceIndex = self.index
+                self.index += 1
+            self.xChoiceI = self.nodeList[self.choiceIndex].name.x1
+            self.yChoiceI = self.nodeList[self.choiceIndex].name.y1
+            self.xChoiceN = self.nodeList[self.choiceIndex].name.x2
+            self.yChoiceN = self.nodeList[self.choiceIndex].name.y2
+
+            # Can print to string in text (node.name.toString())
+            #for pre, fill, node in RenderTree(self.root):
+            #    print("%s%s" % (pre, node.name)) 
+            # Not sure how to export with toString to dot file
+            #DotExporter(self.root).to_dotfile("test1.dot")
+            print("Choice total enemy count: " + str(self.enemyCount) + "\n" + "Choice index: " + str(self.choiceIndex)) # From tree search
 
     else:
         # Random solution

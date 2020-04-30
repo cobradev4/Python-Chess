@@ -18,6 +18,8 @@ class Board(object):
         self.brRookMoved = False
         self.wKingMoved = False
         self.bKingMoved = False
+        # Cpu decision variables
+        self.x1, self.x2, self.y1, self.y2 = 0, 0, 0, 0
 
     # Argument variables indicate new and previous locations in said column or row
     def movePiece(self, prevR, prevC, newR, newC):
@@ -76,6 +78,28 @@ class Board(object):
     def upgradePawn(self, x, y, t):
         print("Setting " + str(x) + "," + str(y) + " to " + t)
         self.board[x][y] = ChessPiece(t, self.board[x][y].returnColor())
+
+    def setCPUVars(self, px, py, nx, ny):
+        self.x1 = px
+        self.y1 = py
+        self.x2 = nx
+        self.y2 = ny
+    
+    def getWhiteCount(self):
+        self.count = 0
+        for x in range(8):
+            for y in range(8):
+                if (self.board[x][y].returnColor() == "White"):
+                    self.count += 1
+        return self.count
+    
+    def getBlackCount(self):
+        self.count = 0
+        for x in range(8):
+            for y in range(8):
+                if (self.board[x][y].returnColor() == "Black"):
+                    self.count += 1
+        return self.count
     
     def getBoard(self):
         return self.board[:]

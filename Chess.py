@@ -3,6 +3,7 @@
 from tkinter import Tk, Button, Toplevel
 from tkinter.ttk import Frame, Label, Style
 from PIL import Image, ImageTk
+import time
 from ChessPiece import ChessPiece
 from Board import Board
 from CPU import CPU
@@ -48,12 +49,11 @@ class Chess(object):
             # Reset highlighted background
             self.tileMatrix[prevR][prevC].configure(bg = prevBG)
             # Perform actions based on which turn it is
-            print(str(self.b.checkTurn()))
             if (self.b.checkTurn() == 0):
                 self.window.title("Chess - White's Turn")
             else:
                 self.window.title("Chess - Black's Turn")
-                if (self.gm == "CPU" and gameOver == False and self.b.checkWin() == ""): # Have to check for a win to stop program from freezing
+                if (self.gm == "CPU" and gameOver == False and self.b.checkWin() == ""): # Have to check for a win to stop program from freezing'
                     self.window.title("CPU Calculating...")
                     self.c.playMove(self.b.getBoard())
                     self.tileClick(self.c.getxChoiceI(), self.c.getyChoiceI())
