@@ -40,7 +40,7 @@ class Chess(object):
             # Highlight chosen tile
             prevBG = self.tileMatrix[r][c].cget("bg")
             self.tileMatrix[r][c].configure(bg = "yellow")
-        if (numClicked == 2):
+        elif (numClicked == 2):
             newR = r
             newC = c
             self.b.movePiece(prevR, prevC, newR, newC)
