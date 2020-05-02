@@ -95,7 +95,7 @@ class CPU(object):
             self.lowestEnemyCount = 17
             self.index = 0 # Index for current initial move
             for node in self.nodeList: # Layer 1
-                for node2 in PreOrderIter(node): # Layer 2/Layer3
+                for node2 in PreOrderIter(node): # Layer 2/Layer3 - Includes all children nodes
                     # Check if less enemies will be present
                     if (node2.name.getWhiteCount() < self.lowestEnemyCount):
                         self.choiceIndex = self.index

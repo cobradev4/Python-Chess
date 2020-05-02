@@ -3,7 +3,6 @@
 from tkinter import Tk, Button, Toplevel
 from tkinter.ttk import Frame, Label, Style
 from PIL import Image, ImageTk
-import time
 from ChessPiece import ChessPiece
 from Board import Board
 from CPU import CPU
