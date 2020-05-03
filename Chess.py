@@ -18,7 +18,6 @@ class Chess(object):
     def __init__(self, mode):
         self.b = Board()
         self.gm = mode
-        self.c = CPU()
         self.setupWindow()
         self.loadWindowItems()
         self.window.mainloop()
@@ -28,23 +27,24 @@ class Chess(object):
         self.window.title("Chess - White's Turn")
         self.window.geometry("1000x1000")   
         self.window.resizable(False, False)
+        self.numClicked = 0
 
     def tileClick(self, r, c): 
-        global numClicked, prevR, prevC, newR, newC, prevBG, gameOver
+        global prevR, prevC, newR, newC, prevBG, gameOver
         print(str(r) + "," + str(c) + " has been clicked!")
-        numClicked += 1
-        if (numClicked == 1):
+        self.numClicked += 1
+        if (self.numClicked == 1):
             prevR = r
             prevC = c
             # Highlight chosen tile
             prevBG = self.tileMatrix[r][c].cget("bg")
             self.tileMatrix[r][c].configure(bg = "yellow")
-        elif (numClicked == 2):
+        elif (self.numClicked == 2):
             newR = r
             newC = c
             self.b.movePiece(prevR, prevC, newR, newC)
             self.loadMatrix()
-            numClicked = 0
+            self.numClicked = 0
             # Reset highlighted background
             self.tileMatrix[prevR][prevC].configure(bg = prevBG)
             # Perform actions based on which turn it is
@@ -54,6 +54,7 @@ class Chess(object):
                 self.window.title("Chess - Black's Turn")
                 if (self.gm == "CPU" and gameOver == False and self.b.checkWin() == ""): # Have to check for a win to stop program from freezing'
                     self.window.title("CPU Calculating...")
+                    self.c = CPU()
                     self.c.playMove(self.b.getBoard())
                     self.tileClick(self.c.getxChoiceI(), self.c.getyChoiceI())
                     self.tileClick(self.c.getxChoiceN(), self.c.getyChoiceN())
