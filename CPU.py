@@ -74,32 +74,33 @@ class CPU(object):
                                     self.nodeList2.append(Node(self.boardList2[self.index], parent=self.nodeList[i]))
                                     self.index += 1
             # Layer 3
-            self.index = 0
-            self.nodeList3 = []
-            for i in range(len(self.nodeList2)):
-                self.testB.setBoard(self.boardList2[i].getBoard())
-                for x in range(8):
-                    for y in range(8):
-                        for x2 in range(8):
-                            for y2 in range(8):
-                                if (self.testB.isLegal(x, y, x2, y2)):
-                                    self.board = Board()
-                                    self.boardList3.append(self.board)
-                                    self.boardList3[self.index].setBoard(self.testB.getBoard())
-                                    self.boardList3[self.index].incrementTurn()
-                                    self.boardList3[self.index].movePiece(x, y, x2, y2)
-                                    self.nodeList3.append(Node(self.boardList3[self.index], parent=self.nodeList2[i]))
-                                    self.index += 1
+            # self.index = 0
+            # self.nodeList3 = []
+            # for i in range(len(self.nodeList2)):
+            #     self.testB.setBoard(self.boardList2[i].getBoard())
+            #     for x in range(8):
+            #         for y in range(8):
+            #             for x2 in range(8):
+            #                 for y2 in range(8):
+            #                     if (self.testB.isLegal(x, y, x2, y2)):
+            #                         self.board = Board()
+            #                         self.boardList3.append(self.board)
+            #                         self.boardList3[self.index].setBoard(self.testB.getBoard())
+            #                         self.boardList3[self.index].incrementTurn()
+            #                         self.boardList3[self.index].movePiece(x, y, x2, y2)
+            #                         self.nodeList3.append(Node(self.boardList3[self.index], parent=self.nodeList2[i]))
+            #                         self.index += 1
+
             # Search tree
             self.choiceIndex = -1
-            self.lowestEnemyCount = 17
-            self.index = 0 # Index for current initial move
+            self.lowestEnemyPoints = 100000000
+            #self.highestTeamPoints = -1 -- need to implement predicting enemy moves
+            self.index = 0
             for node in self.nodeList: # Layer 1
-                for node2 in PreOrderIter(node): # Layer 2/Layer3 - Includes all children nodes
-                    # Check if less enemies will be present
-                    if (node2.name.getWhiteCount() < self.lowestEnemyCount):
+                for node2 in PreOrderIter(node): # Layer 2
+                    if (node2.name.getPoints("White") < self.lowestEnemyPoints):
+                        self.lowestEnemyPoints = node2.name.getPoints("White")
                         self.choiceIndex = self.index
-                        self.lowestEnemyCount = node2.name.getWhiteCount()
                 self.index += 1
                     
             self.xChoiceI = self.nodeList[self.choiceIndex].name.x1

@@ -85,21 +85,20 @@ class Board(object):
         self.x2 = nx
         self.y2 = ny
     
-    def getWhiteCount(self):
-        self.count = 0
+    def getPoints(self, color):
+        self.points = 0
         for x in range(8):
             for y in range(8):
-                if (self.board[x][y].returnColor() == "White"):
-                    self.count += 1
-        return self.count
-    
-    def getBlackCount(self):
-        self.count = 0
-        for x in range(8):
-            for y in range(8):
-                if (self.board[x][y].returnColor() == "Black"):
-                    self.count += 1
-        return self.count
+                if (self.board[x][y].returnColor() == color):
+                    if (self.board[x][y].returnType() == "Pawn"):
+                        self.points += 1
+                    if (self.board[x][y].returnType() == "Knight") or (self.board[x][y].returnType() == "Bishop"):
+                        self.points += 3
+                    if (self.board[x][y].returnType() == "Rook"):
+                        self.points += 5
+                    if (self.board[x][y].returnType() == "Queen"):
+                        self.points += 9
+        return self.points
     
     def getBoard(self):
         return self.board[:]
