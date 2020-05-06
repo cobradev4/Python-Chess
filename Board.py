@@ -78,6 +78,10 @@ class Board(object):
     def upgradePawn(self, x, y, t):
         print("Setting " + str(x) + "," + str(y) + " to " + t)
         self.board[x][y] = ChessPiece(t, self.board[x][y].returnColor())
+        for i in range(len(self.destroyedPieces)): # Remove pieces from list that have been added back to board
+            if (self.destroyedPieces[i].returnType() == t and self.destroyedPieces[i].returnColor() == self.board[x][y].returnColor()):
+                self.destroyedPieces.remove(self.destroyedPieces[i])
+                break
 
     def setCPUVars(self, px, py, nx, ny):
         self.x1 = px

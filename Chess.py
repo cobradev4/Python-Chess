@@ -18,6 +18,9 @@ class Chess(object):
     def __init__(self, mode):
         self.b = Board()
         self.gm = mode
+        # For pawn upgrade
+        self.whiteWindowOpened = False
+        self.blackWindowOpened = False
         self.setupWindow()
         self.loadWindowItems()
         self.window.mainloop()
@@ -87,8 +90,15 @@ class Chess(object):
         for i in range(len(self.colorPieceList)):
             if (self.colorPieceList[i].returnType() != "blank") and (self.colorPieceList[i].returnType() != "Pawn"):
                 self.onlyPawns = False
+        # prevent window with only pawns
         if not (self.onlyPawns):
-            self.upgradeW = Toplevel()
+            # Only create new window if one doesn't exist
+            if (c == "White" and self.whiteWindowOpened == False) or (c == "Black" and self.blackWindowOpened == False):
+                self.upgradeW = Toplevel()
+            if (c == "White"):
+                self.whiteWindowOpened = True
+            else:
+                self.blackWindowOpened = True
             self.upgradeW.title('Pawn Upgrade')
             self.destroyedTileList = [Button(self.upgradeW, width = 10, height = 5, bg = "red") for x in range(0, len(self.colorPieceList))]
             print(len(self.destroyedTileList))
@@ -101,12 +111,17 @@ class Chess(object):
                         self.completeImageList[i] = ImageTk.PhotoImage(Image.open(self.imageLocation).resize((40, 40), Image.ANTIALIAS))
                         self.destroyedTileList[i].grid()
                         self.destroyedTileList[i].configure(image = self.completeImageList[i], width = 60, height = 60)
-                        self.destroyedTileList[i].configure(command = lambda x=x, y=y, i=i: self.doPawnUpgrade(x, y, self.colorPieceList[i].returnType()))
+                        self.destroyedTileList[i].configure(command = lambda x=x, y=y, i=i, c=c: self.doPawnUpgrade(x, y, self.colorPieceList[i].returnType(), c))
                 
-    def doPawnUpgrade(self, x, y, t):
+    def doPawnUpgrade(self, x, y, t, c):
         self.b.upgradePawn(x, y, t)
         self.loadWindowItems()
         self.upgradeW.destroy()
+        # Prevent multiple window from being opened
+        if (c == "White"):
+            self.whiteWindowOpened = False
+        else:
+            self.blackWindowOpened = False
 
     def loadWindowItems(self):
         # Tile Matrix (Setup chess board)
