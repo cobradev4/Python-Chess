@@ -4,7 +4,7 @@ This is a personal chess project I started to develop fluency in Python.
 ## Current Features
 * Fully working chess game written from scratch
 * Special chess rules including en passant, castling, and pawn upgrade
-* Lauch menu to choose your game mode
+* Launch menu to choose your game mode
 * Local player versus player (on the same device)
 * Random cpu opponent
 * Intelligent cpu opponent using a tree algorithm - Work in Progress
