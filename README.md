@@ -9,7 +9,7 @@ This is a personal chess project I started to develop fluency in Python.
 * Random cpu opponent
 * Intelligent cpu opponent using a tree algorithm - Work in Progress
 
-## Instalation
+## Installation
 1. Install Python 3
 1. Use pip to install tkinter, PIL, and anytree
 1. Install graphviz if you want to output generated trees to svg files
