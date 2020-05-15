@@ -1,2 +1,21 @@
 # Python-Chess
-Personal Chess Project
+This is a personal chess project I started to develop fluency in Python.
+
+## Current Features
+* Fully working chess game written from scratch
+* Special chess rules including en passant, castling, and pawn upgrade
+* Lauch menu to choose your game mode
+* Local player versus player (on the same device)
+* Random cpu opponent
+* Intelligent cpu opponent using a tree algorithm - Work in Progress
+
+## Instalation
+1. Install Python 3
+1. Use pip to install tkinter, PIL, and anytree
+1. Install graphviz if you want to output generated trees to svg files
+
+## TODO
+ * Write neural network game mode
+ * Add checkmate rules
+ * Write local network multiplayer
+ * More thoroughly document items
