@@ -7,6 +7,7 @@ from ChessPiece import ChessPiece
 from Board import Board
 from CPU import CPU
 import threading
+import time
 
 #Global variables for tile interaction
 numClicked = 0
@@ -39,6 +40,7 @@ class Chess(object):
         self.c = CPU()
         self.c.playMove(self.b.getBoard())
         self.tileClick(self.c.getxChoiceI(), self.c.getyChoiceI())
+        time.sleep(1) # Make it easier to see where the cpu moves
         self.tileClick(self.c.getxChoiceN(), self.c.getyChoiceN())
 
     def tileClick(self, r, c): 

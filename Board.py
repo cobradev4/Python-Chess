@@ -188,7 +188,6 @@ class Board(object):
                 # En passant
                 if (self.nType == "blank") and (newC - 1 == prevC) and ((newR + 1 == prevR) or (newR - 1 == prevR)):
                     if (self.board[prevR][prevC].isEnPassantEligible()):
-                        print("En passant!")
                         self.board[self.board[prevR][prevC].getEnPassantAttackX()][self.board[prevR][prevC].getEnPassantAttackY()] = ChessPiece("blank","none")
                         return True
             if (self.pColor == "White"):
@@ -209,7 +208,6 @@ class Board(object):
                 # En passant
                 if (self.nType == "blank") and (newC + 1 == prevC) and ((newR + 1 == prevR) or (newR - 1 == prevR)):
                     if (self.board[prevR][prevC].isEnPassantEligible()):
-                        print("En passant!")
                         self.board[self.board[prevR][prevC].getEnPassantAttackX()][self.board[prevR][prevC].getEnPassantAttackY()] = ChessPiece("blank","none")
                         return True
 

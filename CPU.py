@@ -56,6 +56,34 @@ class CPU(object):
                                 self.boardList[self.index].setCPUVars(x, y, x2, y2) # Save coordinates for later use
                                 self.nodeList.append(Node(self.boardList[self.index], parent=self.root))
                                 self.index += 1
+
+            # Layer 1 Risk Assessment
+            self.index = 0
+            self.riskList = []
+            self.testB.incrementTurn() # Evaluate white moves
+            for i in range(len(self.nodeList)):
+                self.testB.setBoard(self.boardList[i].getBoard())
+                for x in range(8):
+                    for y in range(8):
+                        for x2 in range(8):
+                            for y2 in range(8):
+                                if (self.testB.isLegal(x, y, x2, y2)):
+                                    self.board = Board()
+                                    self.riskList.append(self.board)
+                                    self.riskList[self.index].setBoard(self.testB.getBoard())
+                                    self.riskList[self.index].incrementTurn()
+                                    self.riskList[self.index].movePiece(x, y, x2, y2)
+                                    self.index += 1
+            self.testB.incrementTurn() # Return to evaulating black moves
+
+            # Create average point result for each orignal node
+            self.nodeListAverages = []
+            for i in range(len(self.nodeList)):
+                self.totalPoints = 0
+                for b in self.riskList:
+                    self.totalPoints += b.getPoints("Black")
+                self.nodeListAverages.append(self.totalPoints / len(self.nodeList))
+                                
             # Layer 2
             self.index = 0
             self.nodeList2 = []
@@ -93,23 +121,22 @@ class CPU(object):
 
             # Search tree
             self.choiceIndex = -1
-            self.lowestEnemyPoints = 100000000
-            #self.highestTeamPoints = -1 -- need to implement predicting enemy moves
+            self.bestPointDifference = -100000000 #average black points - white points 
             self.index = 0
             # Loop through nodes with a priority to more immediate ones
             for node in self.nodeList: # Layer 1
-                if (node.name.getPoints("White") < self.lowestEnemyPoints):
-                    self.lowestEnemyPoints = node.name.getPoints("White")
+                if (self.nodeListAverages[self.index] - node.name.getPoints("White") > self.bestPointDifference):
+                    self.bestPointDifference = self.nodeListAverages[self.index] - node.name.getPoints("White")
                     self.choiceIndex = self.index
                 else:
                     for node2 in node.children: # Layer 2
-                        if (node2.name.getPoints("White") < self.lowestEnemyPoints):
-                            self.lowestEnemyPoints = node2.name.getPoints("White")
+                        if (self.nodeListAverages[self.index] - node2.name.getPoints("White") > self.bestPointDifference):
+                            self.bestPointDifference = self.nodeListAverages[self.index] - node2.name.getPoints("White")
                             self.choiceIndex = self.index
                         else:
                             for node3 in node2.children: #Layer 3
-                                if (node3.name.getPoints("White") < self.lowestEnemyPoints):
-                                    self.lowesetEnemyPoints = node3.name.getPoints("White")
+                                if (self.nodeListAverages[self.index] - node3.name.getPoints("White") > self.bestPointDifference):
+                                    self.bestPointDifference = self.nodeListAverages[self.index] - node3.name.getPoints("White")
                                     self.choiceIndex = self.index
                 self.index += 1
                     
