@@ -64,8 +64,12 @@ class Chess(object):
             # Perform actions based on which turn it is
             if (self.b.checkTurn() == 0):
                 self.window.title("Chess - White's Turn")
+                if (self.checkForCheck("White")):
+                    self.window.title("Chess - White's Turn - Check!")
             else:
                 self.window.title("Chess - Black's Turn")
+                if (self.checkForCheck("Black")):
+                    self.window.title("Chess - Black's Turn - Check!")
                 if (self.gm == "CPU" and gameOver == False and self.b.checkWin() == ""): # Have to check for a win to stop program from freezing
                     threading.Thread(target=self.startCPU).start()
             # Check for wins
@@ -86,6 +90,13 @@ class Chess(object):
             self.upgradePawn(self.b.searchForPawnUpgrade("White"), 0, "White")
         elif (self.b.searchForPawnUpgrade("Black") > -1):
             self.upgradePawn(self.b.searchForPawnUpgrade("Black"), 7, "Black")
+    
+    def checkForCheck(self, color):
+        for x in range(8):
+            for y in range(8):
+                if (self.b.getBoard()[x][y].returnColor() == color and self.b.getBoard()[x][y].returnType() == "King"):
+                    return self.b.isInCheck(x, y)
+        return False
 
     def upgradePawn(self, x, y, c):
         self.colorPieceList = []

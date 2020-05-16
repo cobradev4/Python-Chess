@@ -168,6 +168,10 @@ class Board(object):
         if (self.pType == "blank"):
             return False
 
+        # King check rule
+        if self.nType == "King" and not self.isInCheck(newR, newC):
+            return False
+
         # Pawn rules
         if (self.pType == "Pawn"):
             if (self.pColor == "Black"):
