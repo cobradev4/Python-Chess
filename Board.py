@@ -142,7 +142,6 @@ class Board(object):
         for x in range(8):
             for y in range(8):
                 if (self.isLegal(x, y, r, c)):
-                    print("Found check!")
                     self.incrementTurn() # Reset turns
                     return True
         self.incrementTurn() # Reset turns
