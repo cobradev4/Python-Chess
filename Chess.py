@@ -6,6 +6,7 @@ from PIL import Image, ImageTk
 from ChessPiece import ChessPiece
 from Board import Board
 from CPU import CPU
+import threading
 
 #Global variables for tile interaction
 numClicked = 0
@@ -32,6 +33,14 @@ class Chess(object):
         self.window.resizable(False, False)
         self.numClicked = 0
 
+    # Method to initialize opponent cpu for separate thread
+    def startCPU(self):
+        self.window.title("CPU Calculating...")
+        self.c = CPU()
+        self.c.playMove(self.b.getBoard())
+        self.tileClick(self.c.getxChoiceI(), self.c.getyChoiceI())
+        self.tileClick(self.c.getxChoiceN(), self.c.getyChoiceN())
+
     def tileClick(self, r, c): 
         global prevR, prevC, newR, newC, prevBG, gameOver
         print(str(r) + "," + str(c) + " has been clicked!")
@@ -56,12 +65,8 @@ class Chess(object):
             else:
                 self.window.title("Chess - Black's Turn")
                 if (self.gm == "CPU" and gameOver == False and self.b.checkWin() == ""): # Have to check for a win to stop program from freezing
-                    self.window.title("CPU Calculating...")
-                    print("CPU Calculating...")
-                    self.c = CPU()
-                    self.c.playMove(self.b.getBoard())
-                    self.tileClick(self.c.getxChoiceI(), self.c.getyChoiceI())
-                    self.tileClick(self.c.getxChoiceN(), self.c.getyChoiceN())
+                    self.cpuThread = threading.Thread(target=self.startCPU)
+                    self.cpuThread.start()
             # Check for wins
             if (self.b.checkWin() == "Black"):
                 self.window.title("Game Over - Black Wins!")
