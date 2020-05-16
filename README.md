@@ -23,3 +23,4 @@ This is a personal chess project I started to develop fluency in Python.
  * Clean up everything - many parts are implemented inefficiently
  * Fix unknown bugs in the game
  * Implement more threading
+ * Implement smooth drag and drop graphics
