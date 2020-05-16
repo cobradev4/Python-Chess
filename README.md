@@ -26,3 +26,4 @@ This is a personal chess project I started to develop fluency in Python.
  * Implement smooth drag and drop graphics
  * Implement minmax algorithm and dynamically check trees as they are created
  * Make more compatible with alternate resolutions
+ * Implement risk assessment in tree evaluation
