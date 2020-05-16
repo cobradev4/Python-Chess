@@ -67,8 +67,7 @@ class Chess(object):
             else:
                 self.window.title("Chess - Black's Turn")
                 if (self.gm == "CPU" and gameOver == False and self.b.checkWin() == ""): # Have to check for a win to stop program from freezing
-                    self.cpuThread = threading.Thread(target=self.startCPU)
-                    self.cpuThread.start()
+                    threading.Thread(target=self.startCPU).start()
             # Check for wins
             if (self.b.checkWin() == "Black"):
                 self.window.title("Game Over - Black Wins!")
