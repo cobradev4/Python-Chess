@@ -20,3 +20,4 @@ This is a personal chess project I started to develop fluency in Python.
  * Add checkmate rules
  * Write local network multiplayer
  * More thoroughly document items
+ * Clean up everything - many parts are implemented inefficiently
