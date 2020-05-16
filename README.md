@@ -24,3 +24,4 @@ This is a personal chess project I started to develop fluency in Python.
  * Fix unknown bugs in the game
  * Implement more threading
  * Implement smooth drag and drop graphics
+ * Implement minmax algorithm and dynamically check trees as they are created
