@@ -96,16 +96,21 @@ class CPU(object):
             self.lowestEnemyPoints = 100000000
             #self.highestTeamPoints = -1 -- need to implement predicting enemy moves
             self.index = 0
+            # Loop through nodes with a priority to more immediate ones
             for node in self.nodeList: # Layer 1
-                for node2 in node.children: # Layer 2
-                    if (node2.name.getPoints("White") < self.lowestEnemyPoints):
-                        self.lowestEnemyPoints = node2.name.getPoints("White")
-                        self.choiceIndex = self.index
-                    else:
-                        for node3 in node2.children: #Layer 3
-                            if (node3.name.getPoints("White") < self.lowestEnemyPoints):
-                                self.lowesetEnemyPoints = node3.name.getPoints("White")
-                                self.choiceIndex = self.index
+                if (node.name.getPoints("White") < self.lowestEnemyPoints):
+                    self.lowestEnemyPoints = node.name.getPoints("White")
+                    self.choiceIndex = self.index
+                else:
+                    for node2 in node.children: # Layer 2
+                        if (node2.name.getPoints("White") < self.lowestEnemyPoints):
+                            self.lowestEnemyPoints = node2.name.getPoints("White")
+                            self.choiceIndex = self.index
+                        else:
+                            for node3 in node2.children: #Layer 3
+                                if (node3.name.getPoints("White") < self.lowestEnemyPoints):
+                                    self.lowesetEnemyPoints = node3.name.getPoints("White")
+                                    self.choiceIndex = self.index
                 self.index += 1
                     
             self.xChoiceI = self.nodeList[self.choiceIndex].name.x1

@@ -139,7 +139,6 @@ class Board(object):
                 
     def isInCheck(self, r, c):
         self.incrementTurn() # Need to allow opposite attacks to be legal
-        print("Checking for possible checks...")
         for x in range(8):
             for y in range(8):
                 if (self.isLegal(x, y, r, c)):
@@ -184,7 +183,6 @@ class Board(object):
                         return True
                 # elif wouldn't work for some reason
                 if (self.nType != "blank") and (newC - 1 == prevC) and ((newR + 1 == prevR) or (newR - 1 == prevR)):
-                    print("Pawn attacking: " + self.nType)
                     return True
                 # En passant
                 if (self.nType == "blank") and (newC - 1 == prevC) and ((newR + 1 == prevR) or (newR - 1 == prevR)):
@@ -206,7 +204,6 @@ class Board(object):
                         return True
                 # elif wouldn't work for some reason
                 if (self.nType != "blank") and (newC + 1 == prevC) and ((newR + 1 == prevR) or (newR - 1 == prevR)):
-                    print("Pawn attacking: " + self.nType)
                     return True
                 # En passant
                 if (self.nType == "blank") and (newC + 1 == prevC) and ((newR + 1 == prevR) or (newR - 1 == prevR)):
@@ -263,8 +260,6 @@ class Board(object):
                 while (newC != prevC - 1) and (newR != prevR + 1):
                     prevR += 1
                     prevC -= 1
-                    print("Checking: " + str(prevR) + "," + str(prevC))
-                    print(self.board[prevR][prevC].returnType())
                     if (self.board[prevR][prevC].returnType() != "blank"):
                         return False
                 return (newC == prevC - 1) and (newR == prevR + 1) # Final check to ensure diagonal
@@ -273,8 +268,6 @@ class Board(object):
                 while (newC != prevC + 1) and (newR != prevR + 1):
                     prevR += 1
                     prevC += 1
-                    print("Checking: " + str(prevR) + "," + str(prevC))
-                    print(self.board[prevR][prevC].returnType())
                     if (self.board[prevR][prevC].returnType() != "blank"):
                         return False
                 return (newC == prevC + 1) and (newR == prevR + 1)
@@ -283,8 +276,6 @@ class Board(object):
                 while (newC != prevC - 1) and (newR != prevR -1):
                     prevR -= 1
                     prevC -= 1
-                    print("Checking: " + str(prevR) + "," + str(prevC))
-                    print(self.board[prevR][prevC].returnType())
                     if (self.board[prevR][prevC].returnType() != "blank"):
                         return False
                 return (newC == prevC - 1) and (newR == prevR - 1)
@@ -293,8 +284,6 @@ class Board(object):
                 while (newC != prevC + 1) and (newR != prevR - 1):
                     prevR -= 1
                     prevC += 1
-                    print("Checking: " + str(prevR) + "," + str(prevC))
-                    print(self.board[prevR][prevC].returnType())
                     if (self.board[prevR][prevC].returnType() != "blank"):
                         return False
                 return (newC == prevC + 1) and (newR == prevR - 1)
