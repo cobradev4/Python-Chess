@@ -25,5 +25,6 @@ def startGame(m):
 window.mainloop()
 
 # Create game based on mode
-print(mode)
-Chess(mode)
+if (mode != ""):
+    print(mode)
+    Chess(mode)
