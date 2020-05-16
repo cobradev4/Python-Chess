@@ -55,8 +55,9 @@ class Chess(object):
                 self.window.title("Chess - White's Turn")
             else:
                 self.window.title("Chess - Black's Turn")
-                if (self.gm == "CPU" and gameOver == False and self.b.checkWin() == ""): # Have to check for a win to stop program from freezing'
+                if (self.gm == "CPU" and gameOver == False and self.b.checkWin() == ""): # Have to check for a win to stop program from freezing
                     self.window.title("CPU Calculating...")
+                    print("CPU Calculating...")
                     self.c = CPU()
                     self.c.playMove(self.b.getBoard())
                     self.tileClick(self.c.getxChoiceI(), self.c.getyChoiceI())

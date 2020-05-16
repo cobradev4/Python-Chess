@@ -2,7 +2,7 @@
 from ChessPiece import ChessPiece
 from Board import Board
 import random
-from anytree import Node, RenderTree, PreOrderIter
+from anytree import Node, RenderTree
 from anytree.exporter import DotExporter
 
 class CPU(object):
@@ -97,10 +97,15 @@ class CPU(object):
             #self.highestTeamPoints = -1 -- need to implement predicting enemy moves
             self.index = 0
             for node in self.nodeList: # Layer 1
-                for node2 in PreOrderIter(node): # Layer 2
+                for node2 in node.children: # Layer 2
                     if (node2.name.getPoints("White") < self.lowestEnemyPoints):
                         self.lowestEnemyPoints = node2.name.getPoints("White")
                         self.choiceIndex = self.index
+                    else:
+                        for node3 in node2.children: #Layer 3
+                            if (node3.name.getPoints("White") < self.lowestEnemyPoints):
+                                self.lowesetEnemyPoints = node3.name.getPoints("White")
+                                self.choiceIndex = self.index
                 self.index += 1
                     
             self.xChoiceI = self.nodeList[self.choiceIndex].name.x1
