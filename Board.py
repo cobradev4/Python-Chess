@@ -172,7 +172,7 @@ class Board(object):
                 if (self.nType == "blank") and (prevR == newR):
                     if (newC - 1 == prevC):
                         return True
-                    if (newC - 2 == prevC) and (prevC == 1):
+                    if (newC - 2 == prevC) and (prevC == 1) and (self.board[prevR][newC - 1].returnType() == "blank"):
                         if (newR - 1 > -1): # Prevent IndexError
                             if (self.board[newR - 1][newC].returnType() == "Pawn") and (self.board[newR - 1][newC].returnColor() != "Black"):
                                 self.board[newR - 1][newC].setEnPassantEligible(True, newR, newC)
@@ -193,7 +193,7 @@ class Board(object):
                 if (self.nType == "blank") and (prevR == newR):
                     if (newC + 1 == prevC):
                         return True
-                    if (newC + 2 == prevC) and (prevC == 6):
+                    if (newC + 2 == prevC) and (prevC == 6) and (self.board[prevR][newC + 1].returnType() == "blank"):
                         if (newR - 1 > -1): # Prevent IndexError
                             if (self.board[newR - 1][newC].returnType() == "Pawn") and (self.board[newR - 1][newC].returnColor() != "White"):
                                 self.board[newR - 1][newC].setEnPassantEligible(True, newR, newC)
