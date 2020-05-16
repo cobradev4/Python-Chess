@@ -102,6 +102,8 @@ class Board(object):
                         self.points += 5
                     if (self.board[x][y].returnType() == "Queen"):
                         self.points += 9
+                    if (self.board[x][y].returnType() == "King"):
+                        self.points += 12
         return self.points
     
     def getBoard(self):
