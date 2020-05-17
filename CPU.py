@@ -76,13 +76,14 @@ class CPU(object):
                                     self.index += 1
             self.testB.incrementTurn() # Return to evaulating black moves
 
-            # Create average point result for each orignal node
-            self.nodeListAverages = []
+            # Find lowest points for cpu
+            self.nodeListLowests = []
             for i in range(len(self.nodeList)):
-                self.totalPoints = 0
+                self.lowestPoints = 1000000
                 for b in self.riskList:
-                    self.totalPoints += b.getPoints("Black")
-                self.nodeListAverages.append(self.totalPoints / len(self.nodeList))
+                    if (b.getPoints("Black") < self.lowestPoints):
+                        self.lowestPoints = b.getPoints("Black")
+                self.nodeListLowests.append(self.lowestPoints)
                                 
             # Layer 2
             self.index = 0
@@ -125,18 +126,18 @@ class CPU(object):
             self.index = 0
             # Loop through nodes with a priority to more immediate ones
             for node in self.nodeList: # Layer 1
-                if (self.nodeListAverages[self.index] - node.name.getPoints("White") > self.bestPointDifference):
-                    self.bestPointDifference = self.nodeListAverages[self.index] - node.name.getPoints("White")
+                if (self.nodeListLowests[self.index] - node.name.getPoints("White") > self.bestPointDifference):
+                    self.bestPointDifference = self.nodeListLowests[self.index] - node.name.getPoints("White")
                     self.choiceIndex = self.index
                 else:
                     for node2 in node.children: # Layer 2
-                        if (self.nodeListAverages[self.index] - node2.name.getPoints("White") > self.bestPointDifference):
-                            self.bestPointDifference = self.nodeListAverages[self.index] - node2.name.getPoints("White")
+                        if (self.nodeListLowests[self.index] - node2.name.getPoints("White") > self.bestPointDifference):
+                            self.bestPointDifference = self.nodeListLowests[self.index] - node2.name.getPoints("White")
                             self.choiceIndex = self.index
                         else:
                             for node3 in node2.children: #Layer 3
-                                if (self.nodeListAverages[self.index] - node3.name.getPoints("White") > self.bestPointDifference):
-                                    self.bestPointDifference = self.nodeListAverages[self.index] - node3.name.getPoints("White")
+                                if (self.nodeListLowests[self.index] - node3.name.getPoints("White") > self.bestPointDifference):
+                                    self.bestPointDifference = self.nodeListLowests[self.index] - node3.name.getPoints("White")
                                     self.choiceIndex = self.index
                 self.index += 1
                     
