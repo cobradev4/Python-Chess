@@ -17,7 +17,7 @@ This is a personal chess project I started to develop fluency in Python.
 
 ## TODO
  * Write neural network game mode
- * Add checkmate rules
+ * Add checkmate indication
  * Write local network multiplayer
  * More thoroughly document items
  * Clean up everything - many parts are implemented inefficiently
@@ -26,4 +26,3 @@ This is a personal chess project I started to develop fluency in Python.
  * Implement smooth drag and drop graphics
  * Implement minmax algorithm and dynamically check trees as they are created
  * Make more compatible with alternate resolutions
- * Implement risk assessment in tree evaluation
