@@ -139,14 +139,17 @@ class Board(object):
             return "White"
         return ""
                 
-    def isInCheck(self, r, c):
-        self.incrementTurn() # Need to allow opposite attacks to be legal
+    def isInCheck(self, r, c, increment):
+        if increment:
+            self.incrementTurn() # Need to allow opposite attacks to be legal
         for x in range(8):
             for y in range(8):
                 if (self.isLegal(x, y, r, c)):
-                    self.incrementTurn() # Reset turns
+                    if increment:
+                        self.incrementTurn() # Reset turns
                     return True
-        self.incrementTurn() # Reset turns
+        if increment:
+            self.incrementTurn() # Reset turns
         return False
 
     # Have to write out all rules of chess here :(
@@ -167,11 +170,7 @@ class Board(object):
             return False
         if (self.pType == "blank"):
             return False
-
-        # King check rule
-        if self.nType == "King" and not self.isInCheck(newR, newC):
-            return False
-
+            
         # Pawn rules
         if (self.pType == "Pawn"):
             if (self.pColor == "Black"):
@@ -305,12 +304,12 @@ class Board(object):
                     return True
             # Castling
             if (prevR + 2 == newR) and (newC == prevC):
-                if (self.isInCheck(prevR, prevC)):
+                if (self.isInCheck(prevR, prevC, True)):
                     return False
                 for i in range(5, 7):
                         if (self.board[i][newC].returnType() != "blank"):
                             return False
-                        if (self.isInCheck(i, newC)):
+                        if (self.isInCheck(i, newC, True)):
                             return False
                 # Move rook
                 if (self.pColor == "White"):
@@ -325,12 +324,12 @@ class Board(object):
                     self.board[7][0] = ChessPiece("blank", "none")
                 return True
             if (prevR - 2 == newR) and (newC == prevC):
-                if (self.isInCheck(prevR, prevC)):
+                if (self.isInCheck(prevR, prevC, True)):
                     return False
                 for i in range(1, 4):
                             if (self.board[i][newC].returnType() != "blank"):
                                 return False
-                            if (self.isInCheck(i, newC)):
+                            if (self.isInCheck(i, newC, True)):
                                 return False
                 # Move rook
                 if (self.pColor == "Black"):

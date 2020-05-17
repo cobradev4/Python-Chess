@@ -95,7 +95,7 @@ class Chess(object):
         for x in range(8):
             for y in range(8):
                 if (self.b.getBoard()[x][y].returnColor() == color and self.b.getBoard()[x][y].returnType() == "King"):
-                    return self.b.isInCheck(x, y)
+                    return self.b.isInCheck(x, y, True)
         return False
 
     def upgradePawn(self, x, y, c):

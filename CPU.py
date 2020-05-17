@@ -122,7 +122,7 @@ class CPU(object):
 
             # Search tree
             self.choiceIndex = -1
-            self.bestPointDifference = -100000000 #average black points - white points 
+            self.bestPointDifference = -100000000 #lowest black points - white points 
             self.index = 0
             # Loop through nodes with a priority to more immediate ones
             for node in self.nodeList: # Layer 1
