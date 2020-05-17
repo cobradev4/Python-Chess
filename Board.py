@@ -26,7 +26,7 @@ class Board(object):
         self.prevType = self.board[prevR][prevC].returnType()
         self.prevColor = self.board[prevR][prevC].returnColor()
 
-        if (self.isLegal(prevR, prevC, newR, newC)):
+        if (self.isLegal(prevR, prevC, newR, newC, True)):
             # Castling - Keep track of which kings and rooks have been moved
             if (self.prevType == "King"):
                 if (self.prevColor == "White"):
@@ -144,7 +144,7 @@ class Board(object):
             self.incrementTurn() # Need to allow opposite attacks to be legal
         for x in range(8):
             for y in range(8):
-                if (self.isLegal(x, y, r, c)):
+                if (self.isLegal(x, y, r, c, False)):
                     if increment:
                         self.incrementTurn() # Reset turns
                     return True
@@ -153,7 +153,7 @@ class Board(object):
         return False
 
     # Have to write out all rules of chess here :(
-    def isLegal(self, prevR, prevC, newR, newC):
+    def isLegal(self, prevR, prevC, newR, newC, checking):
         self.pType = self.board[prevR][prevC].returnType()
         self.nType = self.board[newR][newC].returnType()
         self.pColor = self.board[prevR][prevC].returnColor()
@@ -170,6 +170,12 @@ class Board(object):
             return False
         if (self.pType == "blank"):
             return False
+
+        # King check rules
+        if (self.nType == "King" and checking):
+            if (not self.isInCheck(newR, newC, False)):
+                print("Can't Attack King - Not in Check!")
+                return False
             
         # Pawn rules
         if (self.pType == "Pawn"):

@@ -47,7 +47,7 @@ class CPU(object):
                 for y in range(8):
                     for x2 in range(8):
                         for y2 in range(8):
-                            if self.testB.isLegal(x, y, x2, y2):
+                            if self.testB.isLegal(x, y, x2, y2, True):
                                 self.board = Board()
                                 self.boardList.append(self.board)
                                 self.boardList[self.index].setBoard(board)
@@ -67,7 +67,7 @@ class CPU(object):
                     for y in range(8):
                         for x2 in range(8):
                             for y2 in range(8):
-                                if (self.testB.isLegal(x, y, x2, y2)):
+                                if (self.testB.isLegal(x, y, x2, y2, True)):
                                     self.board = Board()
                                     self.riskList.append(self.board)
                                     self.riskList[self.index].setBoard(self.testB.getBoard())
@@ -94,7 +94,7 @@ class CPU(object):
                     for y in range(8):
                         for x2 in range(8):
                             for y2 in range(8):
-                                if (self.testB.isLegal(x, y, x2, y2)):
+                                if (self.testB.isLegal(x, y, x2, y2, True)):
                                     self.board = Board()
                                     self.boardList2.append(self.board)
                                     self.boardList2[self.index].setBoard(self.testB.getBoard())
@@ -111,7 +111,7 @@ class CPU(object):
                     for y in range(8):
                         for x2 in range(8):
                             for y2 in range(8):
-                                if (self.testB.isLegal(x, y, x2, y2)):
+                                if (self.testB.isLegal(x, y, x2, y2, True)):
                                     self.board = Board()
                                     self.boardList3.append(self.board)
                                     self.boardList3[self.index].setBoard(self.testB.getBoard())
@@ -158,7 +158,7 @@ class CPU(object):
             print("CPU - Analyzing Board...")
             self.testB.setBoard(board)
             self.testB.incrementTurn()
-            while (self.testB.isLegal(self.xChoiceI, self.yChoiceI, self.xChoiceN, self.yChoiceN) == False):
+            while (self.testB.isLegal(self.xChoiceI, self.yChoiceI, self.xChoiceN, self.yChoiceN, True) == False):
                 self.findRandomPieces()
             self.testB.incrementTurn()
             print("Found legal solution: " + str(self.xChoiceI) + "," + str(self.yChoiceI) + " --> " + str(self.xChoiceN) + "," + str(self.yChoiceN))
