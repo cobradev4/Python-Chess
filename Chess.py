@@ -167,6 +167,6 @@ class Chess(object):
                 #print("Loading image: " + self.location)
                 if (self.b.getImage(r,c) != "./images/noneblank.png"):
                     self.tileMatrix[r][c].configure(image = self.pieceImage[r][c], width = 120, height = 120)
-                else:
+                elif (self.tileMatrix[r][c].cget("image") != ''):
                     self.tileMatrix[r][c].configure(image = '', width = 20, height = 10)
                 self.tileMatrix[r][c].configure(command = lambda c=c, r=r: Chess.tileClick(self, r, c)) # https://stackoverflow.com/questions/17677649/tkinter-assign-button-command-in-loop-with-lambda
