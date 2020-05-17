@@ -174,7 +174,6 @@ class Board(object):
         # King check rules
         if (self.nType == "King" and checking):
             if (not self.isInCheck(newR, newC, False)):
-                print("Can't Attack King - Not in Check!")
                 return False
             
         # Pawn rules
