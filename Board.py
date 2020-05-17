@@ -89,21 +89,24 @@ class Board(object):
         self.x2 = nx
         self.y2 = ny
     
-    def getPoints(self, color):
+    def getPoints(self):
         self.points = 0
         for x in range(8):
             for y in range(8):
-                if (self.board[x][y].returnColor() == color):
-                    if (self.board[x][y].returnType() == "Pawn"):
-                        self.points += 1
-                    if (self.board[x][y].returnType() == "Knight") or (self.board[x][y].returnType() == "Bishop"):
-                        self.points += 3
-                    if (self.board[x][y].returnType() == "Rook"):
-                        self.points += 5
-                    if (self.board[x][y].returnType() == "Queen"):
-                        self.points += 9
-                    if (self.board[x][y].returnType() == "King"):
-                        self.points += 12
+                if (self.board[x][y].returnColor() == "White"):
+                    self.value = -1
+                else:
+                    self.value = 1
+                if (self.board[x][y].returnType() == "Pawn"):
+                    self.points += (1 * self.value)
+                if (self.board[x][y].returnType() == "Knight") or (self.board[x][y].returnType() == "Bishop"):
+                    self.points += (3 * self.value)
+                if (self.board[x][y].returnType() == "Rook"):
+                    self.points += (5 * self.value)
+                if (self.board[x][y].returnType() == "Queen"):
+                    self.points += (9 * self.value)
+                if (self.board[x][y].returnType() == "King"):
+                    self.points += (12 * self.value)
         return self.points
     
     def getBoard(self):
