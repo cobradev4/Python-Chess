@@ -71,38 +71,43 @@ class CPU(object):
                     self.nodeListList.append(self.nodeList)
                     self.boardListList.append(self.boardList)
 
-            def minimax(position, depth, maximizingPlayer):
+
+            # Minimax with alpha beta pruning, still need to prevent tree from generating unnecessarily though
+            def minimax(position, depth, alpha, beta, maximizingPlayer):
                 if depth == 0 or terminalNode(position):
                     return position.name.getPoints()
                 if maximizingPlayer:
                     maxEval = -float("inf")
                     for child in position.children:
-                        eval = minimax(child, depth -1, False)
+                        eval = minimax(child, depth - 1, alpha, beta, False)
                         maxEval = max(maxEval, eval)
+                        alpha = max(alpha, eval)
+                        if beta <= alpha:
+                            break
                     return maxEval
                 else:
                     minEval = float("inf")
                     for child in position.children:
-                        eval = minimax(child, depth - 1, True)
+                        eval = minimax(child, depth - 1, alpha, beta, True)
                         minEval = min(minEval, eval)
+                        beta = min(beta, eval)
+                        if beta <= alpha:
+                            break
                     return minEval
 
-            # Run minimax with each value from current board
+            # Run minimax with each possible result from current board
             self.depth = 4
             self.highestValue = -float("inf")
             createTree(self.depth)
             for child in self.nodeListList[0][0].children:
-                print(minimax(child, self.depth - 1, True))
-                if (minimax(child, self.depth - 1, True) > self.highestValue):
+                self.eval = minimax(child, self.depth - 1, -float("inf"), float("inf"), True)
+                if (self.eval > self.highestValue):
                     print(str(self.highestValue))
-                    self.highestValue = minimax(child, self.depth - 1, True)
+                    self.highestValue = self.eval
                     self.xChoiceI = child.name.x1
                     self.yChoiceI = child.name.y1
                     self.xChoiceN = child.name.x2
                     self.yChoiceN = child.name.y2
-            for node in PreOrderIter(self.nodeListList[0][0]):
-                print(node.name.toString())
-            
 
     else:
         # Random solution
