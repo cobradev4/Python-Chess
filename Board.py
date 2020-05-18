@@ -53,8 +53,6 @@ class Board(object):
             self.incrementTurn()
     
     def getDestroyedPieces(self):
-        for i in range(len(self.destroyedPieces)):
-            print("\n" + str(i) + ":" + self.destroyedPieces[i].toString())
         return self.destroyedPieces
     
     def searchForPawnUpgrade(self, c):
@@ -93,10 +91,10 @@ class Board(object):
         self.points = 0
         for x in range(8):
             for y in range(8):
-                if (self.board[x][y].returnColor() == "White"):
-                    self.value = -1
-                else:
+                if (self.board[x][y].returnColor() == "Black"):
                     self.value = 1
+                else:
+                    self.value = -1
                 if (self.board[x][y].returnType() == "Pawn"):
                     self.points += (1 * self.value)
                 if (self.board[x][y].returnType() == "Knight") or (self.board[x][y].returnType() == "Bishop"):
