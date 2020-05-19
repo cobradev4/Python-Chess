@@ -40,7 +40,7 @@ class CPU(object):
                 if node.children:
                     isTerminal = False
                 return isTerminal
-            
+
             def createTree(depth):
                 self.testB.setBoard(board)
                 self.root = Node(self.testB)
@@ -50,10 +50,9 @@ class CPU(object):
                     self.nodeList = []
                     self.boardList = []
                     self.index = 0
-                    if d % 2 == 0:
-                        self.testB.incrementTurn()
-                    for i in range(len(self.nodeListList[d])):
-                        self.testB.setBoard(self.boardListList[d][i].getBoard())
+                    self.testB.incrementTurn()
+                    for i in range(len(self.nodeListList[:][d])):
+                        self.testB.setBoard(self.boardListList[:][d][i].getBoard())
                         for x in range(8):
                             for y in range(8):
                                 for x2 in range(8):
@@ -65,16 +64,19 @@ class CPU(object):
                                             if d % 2 == 0:
                                                 self.boardList[self.index].incrementTurn()
                                             self.boardList[self.index].movePiece(x, y, x2, y2)
-                                            self.boardList[self.index].setCPUVars(x, y, x2, y2)
-                                            self.nodeList.append(Node(self.boardList[self.index], parent=self.nodeListList[d][i]))
+                                            if d == 0:
+                                                self.boardList[self.index].setCPUVars(x, y, x2, y2)
+                                            self.nodeList.append(Node(self.boardList[:][self.index], parent=self.nodeListList[d][i]))
                                             self.index += 1
-                    self.nodeListList.append(self.nodeList)
-                    self.boardListList.append(self.boardList)
+                    self.nodeListList.append(self.nodeList[:])
+                    self.boardListList.append(self.boardList[:])
 
 
             # Minimax with alpha beta pruning, still need to prevent tree from generating unnecessarily though
             def minimax(position, depth, alpha, beta, maximizingPlayer):
                 if depth == 0 or terminalNode(position):
+                    if position.name.getPoints() != 0:
+                        print(str(position.name.getPoints()))
                     return position.name.getPoints()
                 if maximizingPlayer:
                     maxEval = -float("inf")
@@ -96,18 +98,19 @@ class CPU(object):
                     return minEval
 
             # Run minimax with each possible result from current board
-            self.depth = 4
+            self.depth = 3
             self.highestValue = -float("inf")
             createTree(self.depth)
             for child in self.nodeListList[0][0].children:
                 self.eval = minimax(child, self.depth - 1, -float("inf"), float("inf"), True)
                 if (self.eval > self.highestValue):
-                    print(str(self.highestValue))
                     self.highestValue = self.eval
                     self.xChoiceI = child.name.x1
                     self.yChoiceI = child.name.y1
                     self.xChoiceN = child.name.x2
                     self.yChoiceN = child.name.y2
+            # for node in PreOrderIter(self.nodeListList[0][0]):
+            #     print(node.name.toString())
 
     else:
         # Random solution
