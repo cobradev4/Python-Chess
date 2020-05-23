@@ -19,7 +19,7 @@ class Board(object):
         self.wKingMoved = False
         self.bKingMoved = False
         # Cpu decision variables
-        self.x1, self.x2, self.y1, self.y2 = 0, 0, 0, 0
+        self.x1, self.x2, self.y1, self.y2, self.depthCreated = 0, 0, 0, 0, 0
 
     # Argument variables indicate new and previous locations in said column or row
     def movePiece(self, prevR, prevC, newR, newC):
@@ -94,7 +94,7 @@ class Board(object):
                 if (self.board[x][y].returnColor() == "Black"):
                     self.value = 1
                 else:
-                    self.value = -1
+                    self.value = -2
                 if (self.board[x][y].returnType() == "Pawn"):
                     self.points += (1 * self.value)
                 if (self.board[x][y].returnType() == "Knight") or (self.board[x][y].returnType() == "Bishop"):
@@ -114,6 +114,9 @@ class Board(object):
         for x in range(8):
             for y in range(8):
                 self.board[x][y] = b[x][y]
+    
+    def setDepthCreated(self, depth):
+        self.depthCreated = depth
 
     def incrementTurn(self):
         if (self.turn == 0):

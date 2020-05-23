@@ -14,6 +14,7 @@ class CPU(object):
         self.xChoiceN = -1
         self.yChoiceN = -1
         self.testB = Board()
+        self.depth = -1
 
     def getxChoiceI(self):
         print("Returning X1: " + str(self.xChoiceI))
@@ -34,54 +35,91 @@ class CPU(object):
     if (random == False):
         def playMove(self, board):
             print("CPU - Analyzing Board...")
+            self.testB.setBoard(board)
+            self.root = Node(self.testB)
+            self.nodeListList = [[self.root]]
+        
+            def terminalNode(node, maximizingPlayer):
+                testB = Board()
+                testB.setBoard(node.name.getBoard())
+                if maximizingPlayer:
+                    testB.incrementTurn()
+                for x in range(8):
+                    for y in range(8):
+                        for x2 in range(8):
+                            for y2 in range(8):
+                                if testB.isLegal(x, y, x2, y2, True):
+                                    return False
+                return True
 
-            def terminalNode(node):
-                isTerminal = True
-                if node.children:
-                    isTerminal = False
-                return isTerminal
+            # Mainly for the use of creating the initial 20 possible moves
+            def evaluateChildren(node, attackingTeam):
+                nodeList = []
+                testB = Board()
+                testB.setBoard(node.name.getBoard())
+                if attackingTeam == "Black":
+                    testB.incrementTurn()
+                for x in range(8):
+                    for y in range(8):
+                        for x2 in range(8):
+                            for y2 in range(8):
+                                if testB.isLegal(x, y, x2, y2, True):
+                                    tempB = Board()
+                                    tempB.setBoard(testB.getBoard())
+                                    if attackingTeam == "Black":
+                                        tempB.incrementTurn()
+                                    tempB.movePiece(x, y, x2, y2)
+                                    tempB.setCPUVars(x, y, x2, y2)
+                                    nodeList.append(Node(tempB, parent=node))
+                self.nodeListList.append(nodeList[:])
+            
+            def evaluateChild(node, attackingTeam, index):
+                testB = Board()
+                testB.setBoard(node.name.getBoard())
+                if attackingTeam == "Black":
+                    testB.incrementTurn()
+                tempIndex = 0
+                for x in range(8):
+                    for y in range(8):
+                        for x2 in range(8):
+                            for y2 in range(8):
+                                if testB.isLegal(x, y, x2, y2, True):
+                                    if (tempIndex == index):
+                                        tempB = Board()
+                                        tempB.setBoard(testB.getBoard())
+                                        if attackingTeam == "Black":
+                                            tempB.incrementTurn()
+                                        tempB.movePiece(x, y, x2, y2)
+                                        child = Node(tempB, parent=node)
+                                        return child
+                                    tempIndex += 1
+                return node
 
-            def createTree(depth):
-                self.testB.setBoard(board)
-                self.root = Node(self.testB)
-                self.nodeListList = [[self.root]]
-                self.boardListList = [[self.testB]]
-                for d in range(depth):
-                    self.nodeList = []
-                    self.boardList = []
-                    self.index = 0
-                    self.testB.incrementTurn()
-                    for i in range(len(self.nodeListList[:][d])):
-                        self.testB.setBoard(self.boardListList[:][d][i].getBoard())
-                        for x in range(8):
-                            for y in range(8):
-                                for x2 in range(8):
-                                    for y2 in range(8):
-                                        if (self.testB.isLegal(x, y, x2, y2, True)):
-                                            self.board = Board()
-                                            self.boardList.append(self.board)
-                                            self.boardList[self.index].setBoard(self.testB.getBoard())
-                                            if d % 2 == 0:
-                                                self.boardList[self.index].incrementTurn()
-                                            self.boardList[self.index].movePiece(x, y, x2, y2)
-                                            if d == 0:
-                                                self.boardList[self.index].setCPUVars(x, y, x2, y2)
-                                            self.nodeList.append(Node(self.boardList[:][self.index], parent=self.nodeListList[d][i]))
-                                            self.index += 1
-                    self.nodeListList.append(self.nodeList[:])
-                    self.boardListList.append(self.boardList[:])
+            def getNumChildren(node, attackingTeam):
+                testB = Board()
+                testB.setBoard(node.name.getBoard())
+                if attackingTeam == "Black":
+                    testB.incrementTurn()
+                numMoves = 0
+                for x in range(8):
+                    for y in range(8):
+                        for x2 in range(8):
+                            for y2 in range(8):
+                                if testB.isLegal(x, y, x2, y2, True):
+                                    numMoves += 1      
+                return numMoves
 
-
-            # Minimax with alpha beta pruning, still need to prevent tree from generating unnecessarily though
+            # Minimax with alpha beta pruning
             def minimax(position, depth, alpha, beta, maximizingPlayer):
-                if depth == 0 or terminalNode(position):
-                    if position.name.getPoints() != 0:
-                        print(str(position.name.getPoints()))
+                if depth == 0 or terminalNode(position, maximizingPlayer):
+                    # if position.name.getPoints() != 0:
+                    #     print(str(position.name.getPoints()))
                     return position.name.getPoints()
                 if maximizingPlayer:
                     maxEval = -float("inf")
-                    for child in position.children:
-                        eval = minimax(child, depth - 1, alpha, beta, False)
+                    for c in range(getNumChildren(position, "Black")):
+                        thisChild = evaluateChild(position, "Black", c)
+                        eval = minimax(thisChild, depth - 1, alpha, beta, False)
                         maxEval = max(maxEval, eval)
                         alpha = max(alpha, eval)
                         if beta <= alpha:
@@ -89,8 +127,9 @@ class CPU(object):
                     return maxEval
                 else:
                     minEval = float("inf")
-                    for child in position.children:
-                        eval = minimax(child, depth - 1, alpha, beta, True)
+                    for c in range(getNumChildren(position, "White")):
+                        thisChild = evaluateChild(position, "White", c)
+                        eval = minimax(thisChild, depth - 1, alpha, beta, True)
                         minEval = min(minEval, eval)
                         beta = min(beta, eval)
                         if beta <= alpha:
@@ -100,15 +139,17 @@ class CPU(object):
             # Run minimax with each possible result from current board
             self.depth = 3
             self.highestValue = -float("inf")
-            createTree(self.depth)
+            evaluateChildren(self.nodeListList[0][0], "Black")
+            self.index = 0
             for child in self.nodeListList[0][0].children:
-                self.eval = minimax(child, self.depth - 1, -float("inf"), float("inf"), True)
+                self.eval = minimax(child, self.depth - 1, -float("inf"), float("inf"), False)
                 if (self.eval > self.highestValue):
                     self.highestValue = self.eval
                     self.xChoiceI = child.name.x1
                     self.yChoiceI = child.name.y1
                     self.xChoiceN = child.name.x2
                     self.yChoiceN = child.name.y2
+                self.index += 1
             # for node in PreOrderIter(self.nodeListList[0][0]):
             #     print(node.name.toString())
 
