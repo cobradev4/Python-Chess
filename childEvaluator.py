@@ -21,9 +21,6 @@ class childEvaluator(object):
         self.prevX2 = x2
         self.prevY2 = y2
 
-# One value's sudden increment brings it to be a true evaluation
-# When the values are set for the next iteration, the previous true value is set
-# That one value should be incremented to account for this, but how?
     def evaluateNextChild(self):
         for x in range(self.x, 8):
             for y in range(self.y, 8):
