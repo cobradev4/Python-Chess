@@ -24,3 +24,4 @@ This is the development branch with newer features and more bugs!
  * Fix unknown bugs in the game
  * Implement smooth drag and drop graphics
  * Make more compatible with alternate resolutions
+ * Add rule where a player can get more queens from pawn upgrade
