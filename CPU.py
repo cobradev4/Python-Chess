@@ -4,6 +4,7 @@ from Board import Board
 import random
 from anytree import Node, RenderTree, PreOrderIter 
 from anytree.exporter import DotExporter
+from childEvaluator import childEvaluator
 
 class CPU(object):
     random = False
@@ -44,13 +45,7 @@ class CPU(object):
                 testB.setBoard(node.name.getBoard())
                 if maximizingPlayer:
                     testB.incrementTurn()
-                for x in range(8):
-                    for y in range(8):
-                        for x2 in range(8):
-                            for y2 in range(8):
-                                if testB.isLegal(x, y, x2, y2, True):
-                                    return False
-                return True
+                return testB.checkWin() != ""
 
             # Mainly for the use of creating the initial 20 possible moves
             def evaluateChildren(node, attackingTeam):
@@ -72,28 +67,6 @@ class CPU(object):
                                     tempB.setCPUVars(x, y, x2, y2)
                                     nodeList.append(Node(tempB, parent=node))
                 self.nodeListList.append(nodeList[:])
-            
-            def evaluateChild(node, attackingTeam, index):
-                testB = Board()
-                testB.setBoard(node.name.getBoard())
-                if attackingTeam == "Black":
-                    testB.incrementTurn()
-                tempIndex = 0
-                for x in range(8):
-                    for y in range(8):
-                        for x2 in range(8):
-                            for y2 in range(8):
-                                if testB.isLegal(x, y, x2, y2, True):
-                                    if (tempIndex == index):
-                                        tempB = Board()
-                                        tempB.setBoard(testB.getBoard())
-                                        if attackingTeam == "Black":
-                                            tempB.incrementTurn()
-                                        tempB.movePiece(x, y, x2, y2)
-                                        child = Node(tempB, parent=node)
-                                        return child
-                                    tempIndex += 1
-                return node
 
             def getNumChildren(node, attackingTeam):
                 testB = Board()
@@ -117,8 +90,9 @@ class CPU(object):
                     return position.name.getPoints()
                 if maximizingPlayer:
                     maxEval = -float("inf")
+                    evaluator = childEvaluator(position, "Black")
                     for c in range(getNumChildren(position, "Black")):
-                        thisChild = evaluateChild(position, "Black", c)
+                        thisChild = evaluator.evaluateNextChild()
                         eval = minimax(thisChild, depth - 1, alpha, beta, False)
                         maxEval = max(maxEval, eval)
                         alpha = max(alpha, eval)
@@ -127,8 +101,9 @@ class CPU(object):
                     return maxEval
                 else:
                     minEval = float("inf")
+                    evaluator2 = childEvaluator(position, "White")
                     for c in range(getNumChildren(position, "White")):
-                        thisChild = evaluateChild(position, "White", c)
+                        thisChild = evaluator2.evaluateNextChild()
                         eval = minimax(thisChild, depth - 1, alpha, beta, True)
                         minEval = min(minEval, eval)
                         beta = min(beta, eval)
@@ -137,7 +112,7 @@ class CPU(object):
                     return minEval
 
             # Run minimax with each possible result from current board
-            self.depth = 3
+            self.depth = 4
             self.highestValue = -float("inf")
             evaluateChildren(self.nodeListList[0][0], "Black")
             self.index = 0
