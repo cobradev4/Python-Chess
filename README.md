@@ -8,7 +8,7 @@ This is the development branch with newer features and more bugs!
 * Special chess rules including en passant, castling, and pawn upgrade
 * Launch menu to choose your game mode
 * Local player versus player (on the same device)
-* Random cpu opponen
+* Random cpu opponent
 
 ## Installation
 1. Install Python 3
