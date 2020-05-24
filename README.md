@@ -12,7 +12,7 @@ This is the development branch with newer features and more bugs!
 
 ## Installation
 1. Install Python 3
-1. Use pip to install tkinter, PIL, and anytree
+1. Use pip to install tkinter, PIL, anytree, and threading
 1. Run main.py to start the program
 
 ## TODO
