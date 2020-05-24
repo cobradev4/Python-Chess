@@ -94,7 +94,7 @@ class Board(object):
                 if (self.board[x][y].returnColor() == "Black"):
                     self.value = 1
                 else:
-                    self.value = -4
+                    self.value = -1
                 if (self.board[x][y].returnType() == "Pawn"):
                     self.points += (1 * self.value)
                 if (self.board[x][y].returnType() == "Knight") or (self.board[x][y].returnType() == "Bishop"):

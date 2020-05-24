@@ -85,14 +85,16 @@ class CPU(object):
             # Minimax with alpha beta pruning
             def minimax(position, depth, alpha, beta, maximizingPlayer):
                 if depth == 0 or terminalNode(position, maximizingPlayer):
-                    # if position.name.getPoints() != 0:
-                    #     print(str(position.name.getPoints()))
+                    if position.name.getPoints() != 0:
+                        print(str(position.name.getPoints()))
                     return position.name.getPoints()
                 if maximizingPlayer:
                     maxEval = -float("inf")
                     evaluator = childEvaluator(position, "Black")
-                    for c in range(getNumChildren(position, "Black")):
+                    while not evaluator.isComplete():
                         thisChild = evaluator.evaluateNextChild()
+                        if thisChild == False:
+                            break
                         eval = minimax(thisChild, depth - 1, alpha, beta, False)
                         maxEval = max(maxEval, eval)
                         alpha = max(alpha, eval)
@@ -102,8 +104,10 @@ class CPU(object):
                 else:
                     minEval = float("inf")
                     evaluator2 = childEvaluator(position, "White")
-                    for c in range(getNumChildren(position, "White")):
+                    while not evaluator2.isComplete():
                         thisChild = evaluator2.evaluateNextChild()
+                        if thisChild == False:
+                            break
                         eval = minimax(thisChild, depth - 1, alpha, beta, True)
                         minEval = min(minEval, eval)
                         beta = min(beta, eval)
@@ -112,7 +116,7 @@ class CPU(object):
                     return minEval
 
             # Run minimax with each possible result from current board
-            self.depth = 4
+            self.depth = 9
             self.highestValue = -float("inf")
             evaluateChildren(self.nodeListList[0][0], "Black")
             self.index = 0
