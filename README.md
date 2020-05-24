@@ -1,5 +1,5 @@
 # Python-Chess - Development Branch
-This is a personal chess project I started to develop fluency in Python.
+This is the development branch with newer features and more bugs!
 
 ## Current Features
 * Fully working chess game written from scratch
