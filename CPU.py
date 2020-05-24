@@ -102,7 +102,7 @@ class CPU(object):
                     return minEval
 
             # Run minimax with each possible result from current board
-            self.depth = 9
+            self.depth = 8
             self.highestValue = -float("inf")
             evaluateChildren(self.nodeListList[0][0], "Black")
             self.index = 0

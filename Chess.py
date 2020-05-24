@@ -39,11 +39,13 @@ class Chess(object):
         self.window.title("CPU Calculating...")
         self.c = CPU()
         self.c.playMove(self.b.getBoard())
-        self.tileClick(self.c.getxChoiceI(), self.c.getyChoiceI())
+        self.tileClick(self.c.getxChoiceI(), self.c.getyChoiceI(), False)
         time.sleep(1) # Make it easier to see where the cpu moves
-        self.tileClick(self.c.getxChoiceN(), self.c.getyChoiceN())
+        self.tileClick(self.c.getxChoiceN(), self.c.getyChoiceN(), False)
 
-    def tileClick(self, r, c): 
+    def tileClick(self, r, c, playerInitialized): 
+        if self.b.checkTurn() == 1 and self.gm == "CPU" and playerInitialized:
+            return False # prevents player from overriding cpu moves
         global prevR, prevC, newR, newC, prevBG, gameOver
         print(str(r) + "," + str(c) + " has been clicked!")
         self.numClicked += 1
@@ -169,4 +171,4 @@ class Chess(object):
                     self.tileMatrix[r][c].configure(image = self.pieceImage[r][c], width = 120, height = 120)
                 elif (self.tileMatrix[r][c].cget("image") != ''):
                     self.tileMatrix[r][c].configure(image = '', width = 20, height = 10)
-                self.tileMatrix[r][c].configure(command = lambda c=c, r=r: Chess.tileClick(self, r, c)) # https://stackoverflow.com/questions/17677649/tkinter-assign-button-command-in-loop-with-lambda
+                self.tileMatrix[r][c].configure(command = lambda c=c, r=r: Chess.tileClick(self, r, c, True)) # https://stackoverflow.com/questions/17677649/tkinter-assign-button-command-in-loop-with-lambda
