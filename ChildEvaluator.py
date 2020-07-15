@@ -4,7 +4,7 @@ from anytree import Node, RenderTree, PreOrderIter
 from Board import Board 
 
 # Child evaluation object for cpu player
-class childEvaluator(object):
+class ChildEvaluator(object):
 
     def __init__(self, node, attackingTeam):
         self.x, self.y, self.x2, self.y2 = 0, 0, 0, 0

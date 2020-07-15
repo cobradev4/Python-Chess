@@ -4,7 +4,7 @@ from Board import Board
 import random
 from anytree import Node, RenderTree, PreOrderIter 
 from anytree.exporter import DotExporter
-from childEvaluator import childEvaluator
+from ChildEvaluator import ChildEvaluator
 
 class CPU(object):
     random = False
@@ -76,7 +76,7 @@ class CPU(object):
                     return position.name.getPoints()
                 if maximizingPlayer:
                     maxEval = -float("inf")
-                    evaluator = childEvaluator(position, "Black")
+                    evaluator = ChildEvaluator(position, "Black")
                     while not evaluator.isComplete():
                         thisChild = evaluator.evaluateNextChild()
                         if thisChild == False:
@@ -89,7 +89,7 @@ class CPU(object):
                     return maxEval
                 else:
                     minEval = float("inf")
-                    evaluator2 = childEvaluator(position, "White")
+                    evaluator2 = ChildEvaluator(position, "White")
                     while not evaluator2.isComplete():
                         thisChild = evaluator2.evaluateNextChild()
                         if thisChild == False:
