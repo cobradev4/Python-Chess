@@ -68,20 +68,6 @@ class CPU(object):
                                     nodeList.append(Node(tempB, parent=node))
                 self.nodeListList.append(nodeList[:])
 
-            def getNumChildren(node, attackingTeam):
-                testB = Board()
-                testB.setBoard(node.name.getBoard())
-                if attackingTeam == "Black":
-                    testB.incrementTurn()
-                numMoves = 0
-                for x in range(8):
-                    for y in range(8):
-                        for x2 in range(8):
-                            for y2 in range(8):
-                                if testB.isLegal(x, y, x2, y2, True):
-                                    numMoves += 1      
-                return numMoves
-
             # Minimax with alpha beta pruning
             def minimax(position, depth, alpha, beta, maximizingPlayer):
                 if depth == 0 or terminalNode(position, maximizingPlayer):
@@ -116,7 +102,7 @@ class CPU(object):
                     return minEval
 
             # Run minimax with each possible result from current board
-            self.depth = 9
+            self.depth = 8
             self.highestValue = -float("inf")
             evaluateChildren(self.nodeListList[0][0], "Black")
             self.index = 0
