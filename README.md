@@ -1,5 +1,5 @@
 # Python-Chess 
-This is a chess project I started to develop fluency for myself in Python!
+This is a chess project I started to learn Python and introduce myself to git
 
 ## Current Features
 * Fully working chess game written from scratch
