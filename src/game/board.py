@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from ChessPiece import ChessPiece
+from .chess_piece import ChessPiece
 
 class Board(object):
     

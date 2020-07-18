@@ -1,10 +1,10 @@
 #!/usr/bin/python
-from ChessPiece import ChessPiece
-from Board import Board
-import random
 from anytree import Node, RenderTree, PreOrderIter 
 from anytree.exporter import DotExporter
-from ChildEvaluator import ChildEvaluator
+
+from game.chess_piece import ChessPiece
+from game.board import Board
+from .child_evaluator import ChildEvaluator
 
 class CPU(object):
     random = False
@@ -117,19 +117,3 @@ class CPU(object):
                 self.index += 1
             # for node in PreOrderIter(self.nodeListList[0][0]):
             #     print(node.name.toString())
-
-    else:
-        # Random solution
-        def playMove(self, board):
-            print("CPU - Analyzing Board...")
-            self.testB.setBoard(board)
-            self.testB.incrementTurn()
-            while (self.testB.isLegal(self.xChoiceI, self.yChoiceI, self.xChoiceN, self.yChoiceN, True) == False):
-                self.findRandomPieces()
-            self.testB.incrementTurn()
-            print("Found legal solution: " + str(self.xChoiceI) + "," + str(self.yChoiceI) + " --> " + str(self.xChoiceN) + "," + str(self.yChoiceN))
-        def findRandomPieces(self):
-            self.xChoiceI = random.choice(range(0, 8))
-            self.yChoiceI = random.choice(range(0, 8))
-            self.xChoiceN = random.choice(range(0, 8))
-            self.yChoiceN = random.choice(range(0, 8))

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from tkinter import Tk, Button
-from Chess import Chess
+from game.chess import Chess
 
 mode = ""
 

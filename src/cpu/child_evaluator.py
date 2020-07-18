@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from anytree import Node, RenderTree, PreOrderIter
-from Board import Board 
+from game.board import Board 
 
 # Child evaluation object for cpu player
 class ChildEvaluator(object):
