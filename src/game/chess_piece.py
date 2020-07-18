@@ -10,7 +10,7 @@ class ChessPiece(object):
         self.enPassantAttackY = -1
     
     def findImage(self):
-        return "./images/" + self.color + self.type + ".png"
+        return f'src/images/{self.color.lower()}_{self.type.lower()}.png'
     
     def returnType(self):
         return self.type

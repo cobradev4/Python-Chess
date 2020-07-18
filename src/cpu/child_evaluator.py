@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from anytree import Node, RenderTree, PreOrderIter
-from Board import Board 
+from game.board import Board 
 
 # Child evaluation object for cpu player
 class ChildEvaluator(object):
@@ -47,4 +47,3 @@ class ChildEvaluator(object):
     
     def isComplete(self):
         return self.x == 7 and self.y ==7 and self.x2 == 7 and self.y2 == 7
-                        

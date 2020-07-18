@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from ChessPiece import ChessPiece
+from .chess_piece import ChessPiece
 
 class Board(object):
     
@@ -104,7 +104,7 @@ class Board(object):
                 if (self.board[x][y].returnType() == "Queen"):
                     self.points += (9 * self.value)
                 if (self.board[x][y].returnType() == "King"):
-                    self.points += (150 * self.value)
+                    self.points += (15 * self.value)
         return self.points
     
     def getBoard(self):

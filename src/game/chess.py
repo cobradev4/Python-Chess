@@ -1,11 +1,12 @@
 #!/usr/bin/python
-
 from tkinter import Tk, Button, Toplevel
 from tkinter.ttk import Frame, Label, Style
 from PIL import Image, ImageTk
-from ChessPiece import ChessPiece
-from Board import Board
-from CPU import CPU
+
+from .chess_piece import ChessPiece
+from .board import Board
+from cpu.computer import CPU
+
 import threading
 import time
 
@@ -122,7 +123,7 @@ class Chess(object):
             self.upgradeW.title('Pawn Upgrade')
             self.destroyedTileList = [Button(self.upgradeW, width = 10, height = 5, bg = "red") for x in range(0, len(self.colorPieceList))]
             print(len(self.destroyedTileList))
-            self.completeImageList = [ImageTk.PhotoImage(Image.open("./images/noneblank.png")) for x in range(0, len(self.colorPieceList))]
+            self.completeImageList = [ImageTk.PhotoImage(Image.open("src/images/none_blank.png")) for x in range(0, len(self.colorPieceList))]
             if (len(self.colorPieceList) > 0):
                 for i in range(0, len(self.colorPieceList)):
                     if (self.colorPieceList[i].returnType() != "Pawn"):
@@ -161,13 +162,13 @@ class Chess(object):
         self.loadMatrix()
 
     def loadMatrix(self): # updates gui from board matrix
-        self.pieceImage = [[ImageTk.PhotoImage(Image.open("./images/noneblank.png")) for x in range(8)] for y in range(8)]
+        self.pieceImage = [[ImageTk.PhotoImage(Image.open("src/images/none_blank.png")) for x in range(8)] for y in range(8)]
         for r in range(8):
             for c in range(8):
                 self.location = self.b.getImage(r, c)
                 self.pieceImage[r][c] = ImageTk.PhotoImage(Image.open(self.location).resize((80, 80), Image.ANTIALIAS))
                 #print("Loading image: " + self.location)
-                if (self.b.getImage(r,c) != "./images/noneblank.png"):
+                if (self.b.getImage(r,c) != "src/images/none_blank.png"):
                     self.tileMatrix[r][c].configure(image = self.pieceImage[r][c], width = 120, height = 120)
                 elif (self.tileMatrix[r][c].cget("image") != ''):
                     self.tileMatrix[r][c].configure(image = '', width = 20, height = 10)
