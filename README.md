@@ -3,7 +3,7 @@ This is a chess project I started to learn Python and introduce myself to git
 
 ## Current Features
 * Fully working chess game written from scratch
-* Inredibly fast and intelligent cpu opponent built using alpha-beta pruning and the minimax algorithm
+* CPU opponent built using alpha-beta pruning and the minimax algorithm
 * Multithreading
 * Special chess rules including en passant, castling, and pawn upgrade
 * Launch menu to choose your game mode
