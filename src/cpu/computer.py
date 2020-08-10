@@ -17,7 +17,7 @@ class CPU(object):
         self.xChoiceN = -1
         self.yChoiceN = -1
         self.testB = Board()
-        self.depth = 10
+        self.depth = 9
 
     def getxChoiceI(self):
         print("Returning X1: " + str(self.xChoiceI))
@@ -97,7 +97,7 @@ class CPU(object):
             return minEval
     
     def evaluate(self, child):
-        result = self.minimax(child, self.depth - 1, -float("inf"), float("inf"), True)
+        result = self.minimax(child, self.depth - 1, -float("inf"), float("inf"), False)
         return result
 
     def playMove(self, board):
@@ -116,7 +116,7 @@ class CPU(object):
         
         print(results)
         highestIndex = results.index(max(results))
-        print(highestIndex)
+
         self.xChoiceI = children[highestIndex].name.x1
         self.yChoiceI = children[highestIndex].name.y1
         self.xChoiceN = children[highestIndex].name.x2

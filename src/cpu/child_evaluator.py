@@ -46,4 +46,4 @@ class ChildEvaluator(object):
         return False
     
     def isComplete(self):
-        return self.x == 7 and self.y ==7 and self.x2 == 7 and self.y2 == 7
+        return self.x == 7 and self.y == 7 and self.x2 == 7 and self.y2 == 7
